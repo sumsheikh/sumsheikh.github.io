@@ -1,0 +1,256 @@
+---
+title: "SumrunSheikhProject2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+# Introduction
+The dataset I am using is called "college_grad_students" which contains 173 observations and 22 variables. To create a binary variable, I created a new variable, "grad_underover" in which I imported a new CSV file and renamed it as "CGS1.csv". The variables in this dataset include: major_category, grad_total, grad_sample_size, grad_employed, grad_employed_fulltime_yearround, grad_unemployed, grad_unemployment_rate, grad_p25th, grad_median, grad_underover, grad_p75th, nongrad_total, nongrad_employed, nongrad_employed_fulltime_yearround, nongrad_unemployed, nongrad_unemployment_rate, nongrad_p25th, nongrad_median, nongrad_p75th, grad_share, grad_premium, and gradtotal. The variables are measuring various graduates and their statistics such as how many graduates graduated, their employment status and their 25th percentile, median, and 75th percentile salary based on their employment status.
+
+# MANOVA Testing
+```{R}
+library(tidyverse)
+library(fivethirtyeight)
+data("college_grad_students")
+CGS <- college_grad_students
+read.csv("CGS.csv")
+CGS1 <- read.csv("CGS.csv")
+
+manova1 <- manova(cbind(grad_total, grad_employed) ~ major_category, data=CGS1)
+summary(manova1)
+
+summary.aov(manova1)
+
+CGS1 %>% group_by(major_category) %>% summarize(mean(grad_total),mean(grad_employed))
+
+pairwise.t.test(CGS1$grad_total, CGS1$major_category, p.adj="none")
+
+pairwise.t.test(CGS1$grad_employed, CGS1$major_category, p.adj="none")
+
+library(rstatix)
+shapiro.test(CGS1$grad_total[0:5000])
+shapiro.test(CGS1$grad_employed[0:5000])
+```
+For the data, only a MANOVA test was performed. From the MANOVA test, we are able to see there was no significant value for both numerical and categorical values tested. Hence, we were not able to perform a Univariate ANOVA or t-test. Based off of the assumptions for a MANOVA test, the first assumption, "random samples, independent variables" was not met and therefore, the rest of the assumptions were not met such as multivariate normality of DV's, homogeneity of within-group covariance matrices and a linear relationship among DV's. Next, we performed two ANOVA tests in which we compared the total number of graduates and if they were employed based off of their major category. To determine the probability of at least one Type I error, we performed 2 t tests and found no values or p value adjustments. Therefore, we had to perform a bonferroni correction to adjust the p value and found the p value levels for both total number of graduates and employed graduates to be less than 0.05 making them significant.
+
+# Randomization Test
+```{R}
+library(dplyr)
+
+X2 <- vector()
+for (i in 1:10000) {
+  samp <- sample(factor(c("Engineering", "Business", "Physical Sciences", "Law & Public Policy", "Computers & Mathematics", "Agriculture & Natural Resources", "Industrial Arts & Consumer Services", "Arts", "Health", "Social Science", "Biology & Life Science", "Psychology & Social Work", "Communications & Journalism", "Humanities & Liberal Arts", "Interdisciplinary")), 173, replace = T)
+  obs <- table(samp)
+  exp <- c(16, 13, 10, 5, 11, 10, 7, 8, 12, 9, 14, 9, 4, 15, 1)
+  X2[i] <- sum((obs-exp)^2/exp)
+}
+
+quantile(X2,.95)
+qchisq(.95, df=14)
+curve(dchisq(x, df = 14), from =0 , to = 100, col = 'green', main = "Chi Square Distribution", xlab = "x^2", ylab = "dchisq")
+
+# rand_dist<-replicate(1000,){
+# rand<- CGS1%>% mutate(major_category=sample(major_category))
+# chisq.test(rand$major_category)$stat
+# }
+
+# chisq.test(CGS1$major_category)$stat
+```
+The H0: The observed proportions of the major categories matches the theoretical proportions.
+The HA: The observed proportions of the major categories does NOT match the theoretical proportions.
+The Chi-squares value is for a 95th percentile is 307.3105 when it should be 23.68, therefore we fail to reject the null hypothesis. 
+
+# Linear Regression Model
+```{R}
+gradtotal <- CGS1$grad_total - mean(CGS1$grad_total)
+nongradtotal <- CGS1$nongrad_total - mean(CGS1$nongrad_total)
+fit1 <- lm(nongrad_total ~ grad_employed*grad_total, data=CGS1)
+summary(fit1)
+
+coef(fit1)
+
+library(ggplot2)
+library(dplyr)
+CGS1 %>% ggplot(aes(grad_total, nongrad_total))+geom_point()+geom_smooth(method = 'lm',se=F)
+
+cor(CGS$grad_total, CGS$nongrad_total)
+
+residual1 <- fit1$residuals
+fittedvalues1 <- fit1$fitted.values
+
+ggplot()+geom_point(aes(fittedvalues1, residual1))+geom_hline(yintercept = 0, color= 'green')
+ggplot()+geom_histogram(aes(residual1))
+ggplot()+geom_qq(aes(sample=residual1))+geom_qq()
+
+
+library(lmtest)
+library(zoo)
+coeftest(fit1)[,1:2]
+# coeftest(fit1, vcov=vcovHC(fit1))[,1:2]
+
+fit2 <- lm(nongrad_total~grad_total, data=CGS1)
+SST <- sum((CGS$nongrad_total-mean(CGS$nongrad_total))^2) 
+SSR <- sum((fit2$fitted.values-mean(CGS$nongrad_total))^2)
+SSE <- sum(fit2$residuals^2) 
+SSR/SST
+```
+While interpreting the coefficients, it is evident that the coefficient is very weak which illustrates a negative relationship between the total number of graduates that are employed and the total number of graduates. The proportion of variation that this plot indicates is 65.28%. Graphically, I was able to check the assumptions of linearity, normality, and homoskedasticity and concluded all three were violated. A robust SE was also found in which this value did in fact differ from the non-robust SE.
+
+# Linear Regression Model (bootstrap edition)
+```{R}
+samp_distn <- replicate(5000, {
+boot_dat <- CGS[sample(nrow(CGS),replace=TRUE),]
+fit3 <- lm(nongrad_total ~ grad_employed*grad_total, data=boot_dat)
+coef(fit3)
+})
+
+samp_distn%>%t%>%as.data.frame%>%summarize_all(sd)
+```
+After rerunning the same regression model, it is evident that there is a change in the bootstrap SE such that it is higher after rerunning it and there is a difference in the p value. 
+
+# Logistic Regression Model
+```{R}
+library(tidyverse)
+library(lmtest)
+library(plotROC)
+
+data <- CGS1 %>% mutate(y=ifelse(grad_underover=="yes",1,0))
+head(data)
+
+fit4 <- glm(y~grad_median, data=data, family=binomial(link="logit"))
+coeftest(fit4)
+
+exp(coef(fit4))
+
+logistic <- function(x){exp(x)/(1+exp(x))}
+table(truth=data$grad_underover, prediction=data$grad_median>75000)%>%addmargins
+
+# accuracy
+(0+81)/173
+
+# TNR specificity
+81/88
+
+# TPR sensitivty
+0/85
+
+# ppv
+0/81
+
+# calculating auc
+widths <- diff(data$y)
+heights <- vector()
+for(i in 1:100) heights[i] <- data$y[i]+data$y[i+1]
+AUC <- sum(heights*widths/2)
+AUC%>%round(3)
+
+CGS1$logit<-predict(fit4,type="link")
+CGS1 %>% ggplot() + geom_density(aes(logit,color=grad_underover,fill=grad_underover), alpha=.4) +
+  theme(legend.position=c(.3,.6))+geom_vline(xintercept=2)+xlab("logit (log-odds)") +
+  geom_rug(aes(logit,color=grad_underover))
+
+ROCplot<-ggplot(data)+geom_roc(aes(d=y,m=grad_median), n.cuts=0)
+ROCplot
+
+calc_auc(ROCplot)
+```
+The estimated coefficient intercept was determined to be -8.238. For every 1 increase in the median salary of a graduate, the odds are calculated to be 0.00086. Using a confusion matrix table, we are able to determine the accuracy to be 0.468, the TNR to be 0.92 and both the TPR and ppv to be 0. An AUC of -1.5 was calculated but with an ROC AUC, the value increased to be 0.55 which is very low and indicates a negative connotation.
+
+# Logistic Regression Model II
+```{r error=TRUE}
+library(tidyverse)
+library(lmtest)
+library(pROC)
+library(glmnet)
+
+class_diag <- function(probs,truth){
+  tab <- table(factor(probs>.5,levels=c("FALSE","TRUE")),truth)
+  acc = sum(diag(tab))/sum(tab)
+  sens = tab[2,2]/colSums(tab)[2]
+  spec = tab[1,1]/colSums(tab)[1]
+  ppv = tab[2,2]/rowSums(tab)[2] 
+
+  if(is.numeric(truth)==FALSE & is.logical(truth)==FALSE) truth<-as.numeric(truth)-1 
+  ord <- order(probs, decreasing=TRUE)
+  probs <- probs[ord]; truth <- truth[ord]
+  
+  TPR = cumsum(truth)/max(1,sum(truth)) 
+  FPR = cumsum(!truth)/max(1,sum(!truth))
+  
+  dup <- c(probs[-1]>=probs[-length(probs)], FALSE)
+  TPR <- c(0,TPR[!dup],1); FPR<-c(0,FPR[!dup],1)
+  
+  n <- length(TPR)
+  auc <- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+
+  data.frame(acc,sens,spec,ppv,auc)
+}
+
+k=10
+data1 <- data[sample(nrow(data)),]
+folds <- cut(seq(1:nrow(data)),breaks=k,labels=F)
+diags <- NULL 
+for(i in 1:k){
+  train <- data1[folds!=i,]   
+  test <- data1[folds==i,]
+  truth <- test$y
+  fit5 <- glm(y~grad_median, data = data,family="binomial")
+  probs <- predict(fit5, newdata = test,type="response")
+  diags <- rbind(diags,class_diag(probs,truth)) 
+}
+summarize_all(diags,mean)
+
+k=10
+data <- CGS1 %>% sample_frac
+data$binary <- ifelse(data$grad_underover=="yes",1,0)
+folds <- ntile(1:nrow(data),n=10) 
+diags <- NULL
+for(i in 1:k){
+train <- data[folds!=i,] 
+test <- data[folds==i,] 
+truth <- test$binary 
+fit6 <- glm(binary~major_code + grad_total + grad_sample_size + grad_employed + grad_employed_fulltime_yearround + grad_unemployed + grad_unemployment_rate + grad_p25th + grad_median + grad_p75th + nongrad_total + nongrad_employed + nongrad_employed_fulltime_yearround + nongrad_unemployed + nongrad_unemployment_rate + nongrad_p25th + nongrad_median + nongrad_p75th + grad_share + grad_premium + gradtotal, 
+data = train, family="binomial")
+probs <- predict(fit6, newdata=test, type="response")
+diags <- rbind(diags,class_diag(probs,truth))
+}
+diags %>% summarize_all(mean)
+
+data$binary <- ifelse(data$grad_underover=="yes",1,0)
+y < -as.matrix(data$binary)
+x <- model.matrix(binary~major_code + grad_total + grad_sample_size + grad_employed + grad_employed_fulltime_yearround + grad_unemployed + grad_unemployment_rate + grad_p25th + grad_median + grad_p75th + nongrad_total + nongrad_employed + nongrad_employed_fulltime_yearround + nongrad_unemployed + nongrad_unemployment_rate + nongrad_p25th + nongrad_median + nongrad_p75th + grad_share + grad_premium + gradtotal, data=data)[,-1]
+head(x)
+x <- scale(x)
+head(x)
+cv <- cv.glmnet(x,y,family="binomial")
+lasso <- glmnet(x,y,family="binomial",lambda=cv$lambda.1se)
+coef(lasso)
+
+k=10
+data <- CGS1 %>% sample_frac 
+folds <- ntile(1:nrow(data),n=10) 
+data$binary <- ifelse(data$grad_underover=="yes",1,0)
+diags<-NULL
+for(i in 1:k){
+train <- data[folds!=i,] 
+test <- data[folds==i,] 
+truth <- test$binary 
+fit7 <- glm(binary~major_code + grad_total + grad_sample_size + grad_employed + grad_employed_fulltime_yearround + grad_unemployed + grad_unemployment_rate + grad_p25th + grad_median + grad_p75th + nongrad_total + nongrad_employed + nongrad_employed_fulltime_yearround + nongrad_unemployed + nongrad_unemployment_rate + nongrad_p25th + nongrad_median + nongrad_p75th + grad_share + grad_premium + gradtotal,
+data=train, family="binomial")
+probs <- predict(fit7, newdata=test, type="response")
+diags<-rbind(diags,class_diag(probs,truth))
+}
+diags%>%summarize_all(mean)
+```
+In regards to the fit model, an accuracy of 0.931 was determined while the sensitivity was calculated to be 0.952, the speicificty was calculated to be 0.911, the precision was calculated to be 0.925 and the AUC was determined to be 0.953. In regards to the 10-fold, an accuracy of 0.931 was determined while the sensitivity was calculated to be 0.952, the specificity was calculated to be 0.911, the precision was calculated to be 0.925 and the AUC was determined to be 0.953. The variables that are retained after performing LASSO are grad_median and grad_employed. In comparison to the model's out-of-sample AUC to that of the logistic regressions above, an AUC od 0.953 was calculated which is the same value.
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -1,0 +1,2399 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Sumrun Sheikh" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>SumrunSheikhProject2</title>
+    <meta name="generator" content="Hugo 0.83.1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project2/">SumrunSheikhProject2</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         January 1, 0001 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The dataset I am using is called “college_grad_students” which contains 173 observations and 22 variables. To create a binary variable, I created a new variable, “grad_underover” in which I imported a new CSV file and renamed it as “CGS1.csv”. The variables in this dataset include: major_category, grad_total, grad_sample_size, grad_employed, grad_employed_fulltime_yearround, grad_unemployed, grad_unemployment_rate, grad_p25th, grad_median, grad_underover, grad_p75th, nongrad_total, nongrad_employed, nongrad_employed_fulltime_yearround, nongrad_unemployed, nongrad_unemployment_rate, nongrad_p25th, nongrad_median, nongrad_p75th, grad_share, grad_premium, and gradtotal. The variables are measuring various graduates and their statistics such as how many graduates graduated, their employment status and their 25th percentile, median, and 75th percentile salary based on their employment status.</p>
+</div>
+<div id="manova-testing" class="section level1">
+<h1>MANOVA Testing</h1>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.0.4     ✓ dplyr   1.0.2
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(fivethirtyeight)</code></pre>
+<pre><code>## Some larger datasets need to be installed separately, like senators and
+## house_district_forecast. To install these, we recommend you install the
+## fivethirtyeightdata package by running:
+## install.packages(&#39;fivethirtyeightdata&#39;, repos =
+## &#39;https://fivethirtyeightdata.github.io/drat/&#39;, type = &#39;source&#39;)</code></pre>
+<pre class="r"><code>data(&quot;college_grad_students&quot;)
+CGS &lt;- college_grad_students
+read.csv(&quot;CGS.csv&quot;)</code></pre>
+<pre><code>##       X major_code
+## 1     1       5601
+## 2     2       6004
+## 3     3       6211
+## 4     4       2201
+## 5     5       2001
+## 6     6       3201
+## 7     7       6206
+## 8     8       1101
+## 9     9       2101
+## 10   10       1904
+## 11   11       6005
+## 12   12       5701
+## 13   13       2504
+## 14   14       1903
+## 15   15       5901
+## 16   16       2107
+## 17   17       6299
+## 18   18       2599
+## 19   19       2503
+## 20   20       6099
+## 21   21       5301
+## 22   22       6203
+## 23   23       5503
+## 24   24       6212
+## 25   25       2106
+## 26   26       6204
+## 27   27       6200
+## 28   28       6105
+## 29   29       2100
+## 30   30       1901
+## 31   31       6202
+## 32   32       2502
+## 33   33       1902
+## 34   34       6104
+## 35   35       2500
+## 36   36       6201
+## 37   37       6000
+## 38   38       6107
+## 39   39       2105
+## 40   40       2403
+## 41   41       4000
+## 42   42       5102
+## 43   43       1100
+## 44   44       1302
+## 45   45       3401
+## 46   46       5403
+## 47   47       6003
+## 48   48       1303
+## 49   49       6007
+## 50   50       2901
+## 51   51       4101
+## 52   52       6207
+## 53   53       2419
+## 54   54       1105
+## 55   55       6209
+## 56   56       6210
+## 57   57       3302
+## 58   58       6001
+## 59   59       6205
+## 60   60       2501
+## 61   61       2102
+## 62   62       6103
+## 63   63       1102
+## 64   64       1301
+## 65   65       5504
+## 66   66       2499
+## 67   67       3604
+## 68   68       4007
+## 69   69       1401
+## 70   70       1106
+## 71   71       3202
+## 72   72       2400
+## 73   73       5098
+## 74   74       2406
+## 75   75       2407
+## 76   76       2416
+## 77   77       2307
+## 78   78       5507
+## 79   79       5500
+## 80   80       1103
+## 81   81       6109
+## 82   82       1199
+## 83   83       2414
+## 84   84       3402
+## 85   85       1104
+## 86   86       2412
+## 87   87       2411
+## 88   88       5206
+## 89   89       2417
+## 90   90       4005
+## 91   91       6006
+## 92   92       6199
+## 93   93       6100
+## 94   94       4001
+## 95   95       4002
+## 96   96       5501
+## 97   97       2306
+## 98   98       6110
+## 99   99       2408
+## 100 100       4901
+## 101 101       5006
+## 102 102       2399
+## 103 103       2402
+## 104 104       5401
+## 105 105       2304
+## 106 106       5205
+## 107 107       3801
+## 108 108       2300
+## 109 109       6002
+## 110 110       2314
+## 111 111       2601
+## 112 112       2413
+## 113 113       5502
+## 114 114       5404
+## 115 115       3301
+## 116 116       2312
+## 117 117       5004
+## 118 118       6108
+## 119 119       2603
+## 120 120       5200
+## 121 121       1501
+## 122 122       5000
+## 123 123       5002
+## 124 124       2405
+## 125 125       2401
+## 126 126       6402
+## 127 127       5599
+## 128 128       3701
+## 129 129       3702
+## 130 130       2602
+## 131 131       2311
+## 132 132       3700
+## 133 133       5506
+## 134 134       5505
+## 135 135       2410
+## 136 136       3699
+## 137 137       5299
+## 138 138       2415
+## 139 139       2309
+## 140 140       5005
+## 141 141       6403
+## 142 142       2409
+## 143 143       4006
+## 144 144       2313
+## 145 145       2418
+## 146 146       5402
+## 147 147       2305
+## 148 148       2308
+## 149 149       3606
+## 150 150       4801
+## 151 151       2310
+## 152 152       3602
+## 153 153       3600
+## 154 154       5001
+## 155 155       5003
+## 156 156       3608
+## 157 157       2404
+## 158 158       3501
+## 159 159       3603
+## 160 160       3607
+## 161 161       3609
+## 162 162       5007
+## 163 163       3611
+## 164 164       5201
+## 165 165       3601
+## 166 166       3605
+## 167 167       5008
+## 168 168       6102
+## 169 169       5203
+## 170 170       5202
+## 171 171       6106
+## 172 172       2303
+## 173 173       2301
+##                                                                 major
+## 1                                               Construction Services
+## 2                                   Commercial Art And Graphic Design
+## 3                                              Hospitality Management
+## 4                              Cosmetology Services And Culinary Arts
+## 5                                          Communication Technologies
+## 6                                                     Court Reporting
+## 7                                    Marketing And Marketing Research
+## 8                               Agriculture Production And Management
+## 9                            Computer Programming And Data Processing
+## 10                                   Advertising And Public Relations
+## 11                                   Film Video And Photographic Arts
+## 12  Electrical, Mechanical, And Precision Technologies And Production
+## 13                        Mechanical Engineering Related Technologies
+## 14                                                         Mass Media
+## 15                           Transportation Sciences And Technologies
+## 16                         Computer Networking And Telecommunications
+## 17                    Miscellaneous Business &amp; Medical Administration
+## 18                             Miscellaneous Engineering Technologies
+## 19                                 Industrial Production Technologies
+## 20                                            Miscellaneous Fine Arts
+## 21                               Criminal Justice And Fire Protection
+## 22                             Business Management And Administration
+## 23                                                        Criminology
+## 24                      Management Information Systems And Statistics
+## 25                    Computer Administration Management And Security
+## 26                                Operations Logistics And E-Commerce
+## 27                                                   General Business
+## 28                                   Medical Technologies Technicians
+## 29                                   Computer And Information Systems
+## 30                                                     Communications
+## 31                                                  Actuarial Science
+## 32                                  Electrical Engineering Technology
+## 33                                                         Journalism
+## 34                                         Medical Assisting Services
+## 35                                           Engineering Technologies
+## 36                                                         Accounting
+## 37                                                          Fine Arts
+## 38                                                            Nursing
+## 39                                               Information Sciences
+## 40                                          Architectural Engineering
+## 41                                    Multi/Interdisciplinary Studies
+## 42         Nuclear, Industrial Radiology, And Biological Technologies
+## 43                                                General Agriculture
+## 44                                                           Forestry
+## 45                                                       Liberal Arts
+## 46                          Human Services And Community Organization
+## 47                                         Visual And Performing Arts
+## 48                                       Natural Resources Management
+## 49                                                        Studio Arts
+## 50                                       Family And Consumer Sciences
+## 51                      Physical Fitness Parks Recreation And Leisure
+## 52                                                            Finance
+## 53                                              Petroleum Engineering
+## 54                                         Plant Science And Agronomy
+## 55                           Human Resources And Personnel Management
+## 56                                             International Business
+## 57                                           Composition And Rhetoric
+## 58                                             Drama And Theater Arts
+## 59                                                 Business Economics
+## 60                              Engineering And Industrial Management
+## 61                                                   Computer Science
+## 62                         Health And Medical Administrative Services
+## 63                                             Agricultural Economics
+## 64                                              Environmental Science
+## 65                                                          Geography
+## 66                                          Miscellaneous Engineering
+## 67                                                            Ecology
+## 68                                  Interdisciplinary Social Sciences
+## 69                                                       Architecture
+## 70                                                       Soil Science
+## 71                                          Pre-Law And Legal Studies
+## 72                                                General Engineering
+## 73                              Multi-Disciplinary Or General Science
+## 74                                                  Civil Engineering
+## 75                                               Computer Engineering
+## 76                                     Mining And Mineral Engineering
+## 77                                          Early Childhood Education
+## 78                                                          Sociology
+## 79                                            General Social Sciences
+## 80                                                    Animal Sciences
+## 81                                      Treatment Therapy Professions
+## 82                                          Miscellaneous Agriculture
+## 83                                             Mechanical Engineering
+## 84                                                         Humanities
+## 85                                                       Food Science
+## 86                           Industrial And Manufacturing Engineering
+## 87                             Geological And Geophysical Engineering
+## 88                                                  Social Psychology
+## 89                          Naval Architecture And Marine Engineering
+## 90                                   Mathematics And Computer Science
+## 91                                          Art History And Criticism
+## 92                           Miscellaneous Health Medical Professions
+## 93                                General Medical And Health Services
+## 94                            Intercultural And International Studies
+## 95                                                 Nutrition Sciences
+## 96                                                          Economics
+## 97                             Physical And Health Education Teaching
+## 98                                        Community And Public Health
+## 99                                             Electrical Engineering
+## 100                                  Theology And Religious Vocations
+## 101                                                      Oceanography
+## 102                                           Miscellaneous Education
+## 103                                            Biological Engineering
+## 104                                             Public Administration
+## 105                                              Elementary Education
+## 106                          Industrial And Organizational Psychology
+## 107                                             Military Technologies
+## 108                                                 General Education
+## 109                                                             Music
+## 110                                           Art And Music Education
+## 111               Linguistics And Comparative Language And Literature
+## 112                       Materials Engineering And Materials Science
+## 113                                       Anthropology And Archeology
+## 114                                                       Social Work
+## 115                                   English Language And Literature
+## 116                                Teacher Education: Multiple Levels
+## 117                                         Geology And Earth Science
+## 118               Pharmacy Pharmaceutical Sciences And Administration
+## 119                                           Other Foreign Languages
+## 120                                                        Psychology
+## 121                              Area Ethnic And Civilization Studies
+## 122                                                 Physical Sciences
+## 123                              Atmospheric Sciences And Meteorology
+## 124                                              Chemical Engineering
+## 125                                             Aerospace Engineering
+## 126                                                           History
+## 127                                     Miscellaneous Social Sciences
+## 128                                               Applied Mathematics
+## 129                                   Statistics And Decision Science
+## 130     French German Latin And Other Common Foreign Language Studies
+## 131                       Social Science Or History Teacher Education
+## 132                                                       Mathematics
+## 133                                  Political Science And Government
+## 134                                           International Relations
+## 135                                         Environmental Engineering
+## 136                                             Miscellaneous Biology
+## 137                                          Miscellaneous Psychology
+## 138                                         Metallurgical Engineering
+## 139                                       Secondary Teacher Education
+## 140                                                       Geosciences
+## 141                                             United States History
+## 142                         Engineering Mechanics Physics And Science
+## 143                               Cognitive Science And Biopsychology
+## 144                                      Language And Drama Education
+## 145                                               Nuclear Engineering
+## 146                                                     Public Policy
+## 147                                     Mathematics Teacher Education
+## 148                            Science And Computer Teacher Education
+## 149                                                      Microbiology
+## 150                                  Philosophy And Religious Studies
+## 151                                           Special Needs Education
+## 152                                                            Botany
+## 153                                                           Biology
+## 154                                        Astronomy And Astrophysics
+## 155                                                         Chemistry
+## 156                                                        Physiology
+## 157                                            Biomedical Engineering
+## 158                                                   Library Science
+## 159                                                 Molecular Biology
+## 160                                                      Pharmacology
+## 161                                                           Zoology
+## 162                                                           Physics
+## 163                                                      Neuroscience
+## 164                                            Educational Psychology
+## 165                                              Biochemical Sciences
+## 166                                                          Genetics
+## 167                                                 Materials Science
+## 168                     Communication Disorders Sciences And Services
+## 169                                             Counseling Psychology
+## 170                                               Clinical Psychology
+## 171                           Health And Medical Preparatory Programs
+## 172                                         School Student Counseling
+## 173                        Educational Administration And Supervision
+##                          major_category grad_total grad_sample_size
+## 1   Industrial Arts &amp; Consumer Services       9173              200
+## 2                                  Arts      53864              882
+## 3                              Business      24417              437
+## 4   Industrial Arts &amp; Consumer Services       5411               72
+## 5               Computers &amp; Mathematics       9109              171
+## 6                   Law &amp; Public Policy       1542               22
+## 7                              Business     190996             3738
+## 8       Agriculture &amp; Natural Resources      17488              386
+## 9               Computers &amp; Mathematics       5611               98
+## 10          Communications &amp; Journalism      33928              688
+## 11                                 Arts      24525              370
+## 12  Industrial Arts &amp; Consumer Services       3187               45
+## 13                          Engineering       6065              111
+## 14          Communications &amp; Journalism      42915              828
+## 15  Industrial Arts &amp; Consumer Services      27410              538
+## 16              Computers &amp; Mathematics      11165              218
+## 17                             Business      22553              408
+## 18                          Engineering      14816              315
+## 19                          Engineering      19885              408
+## 20                                 Arts       1733               27
+## 21                  Law &amp; Public Policy     188228             3794
+## 22                             Business     813399            16129
+## 23                       Social Science      18499              381
+## 24                             Business      41970              963
+## 25              Computers &amp; Mathematics      10290              194
+## 26                             Business      15056              335
+## 27                             Business     602964            10399
+## 28                               Health      47029              942
+## 29              Computers &amp; Mathematics      71527             1425
+## 30          Communications &amp; Journalism     266084             4879
+## 31                             Business       2472               56
+## 32                          Engineering      28155              521
+## 33          Communications &amp; Journalism     119953             2244
+## 34                               Health      18654              326
+## 35                          Engineering      11724              219
+## 36                             Business     569677            11774
+## 37                                 Arts     181514             2528
+## 38                               Health     573467            10432
+## 39              Computers &amp; Mathematics      25799              551
+## 40                          Engineering       6466              143
+## 41                    Interdisciplinary      14405              318
+## 42                    Physical Sciences       3910               65
+## 43      Agriculture &amp; Natural Resources      44306              764
+## 44      Agriculture &amp; Natural Resources      24713              487
+## 45            Humanities &amp; Liberal Arts     213970             3420
+## 46             Psychology &amp; Social Work      29262              555
+## 47                                 Arts      18324              275
+## 48      Agriculture &amp; Natural Resources      29357              659
+## 49                                 Arts      28883              500
+## 50  Industrial Arts &amp; Consumer Services     149084             2294
+## 51  Industrial Arts &amp; Consumer Services     119489             2423
+## 52                             Business     301650             6319
+## 53                          Engineering       7479              164
+## 54      Agriculture &amp; Natural Resources      30983              624
+## 55                             Business      72548             1316
+## 56                             Business      30985              604
+## 57            Humanities &amp; Liberal Arts      21250              332
+## 58                                 Arts      66560             1069
+## 59                             Business      30210              642
+## 60                          Engineering      20177              340
+## 61              Computers &amp; Mathematics     324402             6674
+## 62                               Health      45452              898
+## 63      Agriculture &amp; Natural Resources      14800              305
+## 64               Biology &amp; Life Science      43612              925
+## 65                       Social Science      52147             1008
+## 66                          Engineering      26032              497
+## 67               Biology &amp; Life Science      21535              465
+## 68                       Social Science      30233              541
+## 69                          Engineering     148255             2760
+## 70      Agriculture &amp; Natural Resources       3335               61
+## 71                  Law &amp; Public Policy      33137              544
+## 72                          Engineering     268473             4345
+## 73                    Physical Sciences     223467             3494
+## 74                          Engineering     196344             4057
+## 75                          Engineering      82102             1806
+## 76                          Engineering       6083              126
+## 77                            Education      82430             1396
+## 78                       Social Science     368710             6155
+## 79                       Social Science      73350             1069
+## 80      Agriculture &amp; Natural Resources      56807             1335
+## 81                               Health     142285             2607
+## 82      Agriculture &amp; Natural Resources       5032               98
+## 83                          Engineering     347342             7285
+## 84            Humanities &amp; Liberal Arts      27477              450
+## 85      Agriculture &amp; Natural Resources      14521              266
+## 86                          Engineering      86791             1758
+## 87                          Engineering       3940               66
+## 88             Psychology &amp; Social Work       7007              119
+## 89                          Engineering      10801              197
+## 90              Computers &amp; Mathematics       4810              103
+## 91            Humanities &amp; Liberal Arts      56666              892
+## 92                               Health      51566              848
+## 93                               Health      64284             1172
+## 94            Humanities &amp; Liberal Arts      32549              600
+## 95                               Health      40740              641
+## 96                       Social Science     517614             9822
+## 97                            Education     202105             3061
+## 98                               Health      35543              638
+## 99                          Engineering     482767            10070
+## 100           Humanities &amp; Liberal Arts     165460             3112
+## 101                   Physical Sciences       7315              197
+## 102                           Education     166626             2091
+## 103                         Engineering      21515              433
+## 104                 Law &amp; Public Policy      42661              750
+## 105                           Education    1105607            15410
+## 106            Psychology &amp; Social Work      13718              221
+## 107 Industrial Arts &amp; Consumer Services       3465               29
+## 108                           Education    1128727            13846
+## 109                                Arts     205013             2759
+## 110                           Education     183239             2679
+## 111           Humanities &amp; Liberal Arts      57960              853
+## 112                         Engineering      17051              335
+## 113           Humanities &amp; Liberal Arts     107888             1971
+## 114            Psychology &amp; Social Work     260824             4537
+## 115           Humanities &amp; Liberal Arts     881433            13688
+## 116                           Education      72079             1122
+## 117                   Physical Sciences      90232             1814
+## 118                              Health     152238             2872
+## 119           Humanities &amp; Liberal Arts      46826              784
+## 120            Psychology &amp; Social Work    1184158            20547
+## 121           Humanities &amp; Liberal Arts      84409             1573
+## 122                   Physical Sciences       7979              141
+## 123                   Physical Sciences      11739              254
+## 124                         Engineering     168136             3306
+## 125                         Engineering      58511             1240
+## 126           Humanities &amp; Liberal Arts     645414            11486
+## 127                      Social Science      14077              306
+## 128             Computers &amp; Mathematics      17075              386
+## 129             Computers &amp; Mathematics      21973              429
+## 130           Humanities &amp; Liberal Arts     215376             3187
+## 131                           Education     119073             1646
+## 132             Computers &amp; Mathematics     418056             6906
+## 133                      Social Science     695725            14467
+## 134                      Social Science      69355             1348
+## 135                         Engineering      11722              252
+## 136              Biology &amp; Life Science      27744              553
+## 137            Psychology &amp; Social Work      32107              590
+## 138                         Engineering      13656              251
+## 139                           Education     239928             3094
+## 140                   Physical Sciences       9006              204
+## 141           Humanities &amp; Liberal Arts      18877              311
+## 142                         Engineering      21377              447
+## 143              Biology &amp; Life Science       5982              118
+## 144                           Education     199901             2757
+## 145                         Engineering      10520              243
+## 146                 Law &amp; Public Policy      15284              338
+## 147                           Education      80826             1194
+## 148                           Education      69301              993
+## 149              Biology &amp; Life Science      83816             1631
+## 150           Humanities &amp; Liberal Arts     250420             4566
+## 151                           Education     192495             3240
+## 152              Biology &amp; Life Science      19960              323
+## 153              Biology &amp; Life Science    1085977            21994
+## 154                   Physical Sciences       6331              136
+## 155                   Physical Sciences     464784             8694
+## 156              Biology &amp; Life Science      59363             1155
+## 157                         Engineering      22155              475
+## 158                           Education      28963              314
+## 159              Biology &amp; Life Science      37872              875
+## 160              Biology &amp; Life Science       8853              168
+## 161              Biology &amp; Life Science     106415             1978
+## 162                   Physical Sciences     227722             4361
+## 163              Biology &amp; Life Science      14429              286
+## 164            Psychology &amp; Social Work      28941              396
+## 165              Biology &amp; Life Science     128892             2765
+## 166              Biology &amp; Life Science      12106              261
+## 167                         Engineering      14184              299
+## 168                              Health     182108             2947
+## 169            Psychology &amp; Social Work      51812              724
+## 170            Psychology &amp; Social Work      22716              355
+## 171                              Health     114971             1766
+## 172                           Education      19841              260
+## 173                           Education      54159              841
+##     grad_employed grad_employed_fulltime_yearround grad_unemployed
+## 1            7098                             6511             681
+## 2           40492                            29553            2482
+## 3           18368                            14784            1465
+## 4            3590                             2701             316
+## 5            7512                             5622             466
+## 6            1008                              860               0
+## 7          151570                           123045            8324
+## 8           13104                            11207             473
+## 9            4716                             3981             119
+## 10          28517                            22523             899
+## 11          19059                            13301            2035
+## 12           1984                             1481             319
+## 13           4442                             3669             310
+## 14          35939                            28054            1957
+## 15          20035                            18088             980
+## 16           9037                             7988             803
+## 17          17691                            14807             865
+## 18          12433                            11146             407
+## 19          14752                            12467             603
+## 20           1100                              770              44
+## 21         154146                           133549            6591
+## 22         622357                           527935           32089
+## 23          14584                            12074             692
+## 24          36227                            32121            1459
+## 25           8554                             7581             542
+## 26          12659                            10861             296
+## 27         457191                           387928           19494
+## 28          37639                            29892             987
+## 29          60858                            53807            2539
+## 30         212156                           159049           10851
+## 31           2020                             1725             162
+## 32          22501                            19707            1296
+## 33          91778                            71683            4026
+## 34          14499                            10826             377
+## 35           9471                             7958             450
+## 36         451610                           384280           19729
+## 37         124246                            80794            8072
+## 38         437115                           335009            9498
+## 39          22403                            19028            1179
+## 40           4857                             4264             304
+## 41          12708                             9639             261
+## 42           3129                             2565              28
+## 43          28930                            23024             874
+## 44          16831                            14102             725
+## 45         154404                           112953            6788
+## 46          23537                            18213            1504
+## 47          14841                             9671             593
+## 48          23394                            19087             711
+## 49          21628                            14277            1147
+## 50         101593                            69675            3919
+## 51         103790                            80196            2696
+## 52         252242                           221486           11635
+## 53           5640                             4869             112
+## 54          22782                            18312             735
+## 55          55106                            47878            3813
+## 56          24519                            20196            1424
+## 57          16723                            10535             676
+## 58          50690                            34179            3679
+## 59          22935                            19467            1239
+## 60          12781                            11035            1336
+## 61         281088                           243500           10557
+## 62          35283                            29992            1933
+## 63          10592                             8768             216
+## 64          38068                            29568            1392
+## 65          38935                            30602            1251
+## 66          19112                            16552             685
+## 67          17793                            13713             677
+## 68          22755                            17138            1444
+## 69         114536                            88038            8665
+## 70           2284                             1641              34
+## 71          24818                            20149            1005
+## 72         199771                           174234            7460
+## 73         162694                           126999            4705
+## 74         150299                           127120            5327
+## 75          73147                            65371            1592
+## 76           4491                             4038             271
+## 77          63027                            43428            1760
+## 78         259742                           191949           11353
+## 79          45744                            34005            2841
+## 80          47755                            39047             596
+## 81         123279                            91011            2185
+## 82           2758                             2276             261
+## 83         266923                           234162            9810
+## 84          19264                            13799            1215
+## 85          10857                             8074             370
+## 86          66432                            56355            2669
+## 87           2673                             1905              79
+## 88           4796                             3509             312
+## 89           6739                             6332             222
+## 90           3880                             3045             445
+## 91          40441                            27668            2293
+## 92          39185                            28576            1100
+## 93          54355                            42137            1226
+## 94          26153                            18746            1786
+## 95          31411                            21321             773
+## 96         386002                           315920           17668
+## 97         131845                            92639            3782
+## 98          28112                            22384             874
+## 99         371723                           324080           13974
+## 100        115266                            90580            3926
+## 101          5501                             5642             125
+## 102         86566                            59620            3106
+## 103         16810                            13353             695
+## 104         31985                            27682            2000
+## 105        668185                           438791           13889
+## 106          9546                             7366             453
+## 107          1248                             1040              72
+## 108        698049                           507406           24083
+## 109        150394                            88436            6507
+## 110        123145                            80953            3600
+## 111         40277                            27836            2157
+## 112         13042                            10727             705
+## 113         83632                            59545            4374
+## 114        203983                           153941            7963
+## 115        598806                           420936           25330
+## 116         46866                            32536             896
+## 117         66748                            54643            1881
+## 118        124688                            97680            3174
+## 119         31558                            23188            1436
+## 120        915341                           666630           35718
+## 121         65878                            48598            3091
+## 122          5292                             4180             208
+## 123          8657                             7488             237
+## 124        124544                           106097            4997
+## 125         42632                            39834            1225
+## 126        454797                           347910           18445
+## 127         10916                             9039             551
+## 128         14113                            11699             416
+## 129         16979                            14113             751
+## 130        145043                            98947            5820
+## 131         68997                            47671            2263
+## 132        287467                           217363           11245
+## 133        548199                           455539           22134
+## 134         54693                            44547            2594
+## 135          9387                             8183             450
+## 136         22488                            17787             597
+## 137         24652                            18469             777
+## 138          9299                             8095             218
+## 139        128469                            89415            2929
+## 140          7443                             6200             134
+## 141         12217                             8628             327
+## 142         15822                            13676             472
+## 143          5032                             3879             239
+## 144        122260                            80860            3921
+## 145          8567                             8018             100
+## 146         12875                            10988             415
+## 147         51750                            34672             748
+## 148         42043                            28805             954
+## 149         66240                            53208            2201
+## 150        182113                           138724            7369
+## 151        144858                            98736            3329
+## 152         13071                             9457             449
+## 153        898342                           703347           19368
+## 154          5480                             4548             112
+## 155        336838                           273532           10411
+## 156         50450                            38252            1078
+## 157         19474                            16845             366
+## 158         15651                            10914             483
+## 159         32729                            26944             950
+## 160          7571                             6238             188
+## 161         80607                            60310            1723
+## 162        168583                           140603            6189
+## 163         12551                            10044             225
+## 164         18993                            12772             499
+## 165        109944                            90589            2728
+## 166         10450                             9060             207
+## 167         12263                             9894             273
+## 168        145102                            93323            2103
+## 169         38468                            28808            1420
+## 170         16612                            12022             782
+## 171         78132                            58825            1732
+## 172         11313                             8130             613
+## 173         34142                            26850             582
+##     grad_unemployment_rate grad_p25th grad_median grad_underover grad_p75th
+## 1               0.08754339     110000       75000            yes      53000
+## 2               0.05775585      89000       60000             no      40000
+## 3               0.07386679     100000       65000             no      45000
+## 4               0.08090118      85000       47000             no      24500
+## 5               0.05841063      83700       57000             no      40600
+## 6               0.00000000     120000       75000            yes      55000
+## 7               0.05205949     120000       80000            yes      50000
+## 8               0.03483833     100000       67000             no      41600
+## 9               0.02461220     114000       85000            yes      56000
+## 10              0.03056160      90000       60000             no      43000
+## 11              0.09647293      80000       57000             no      40000
+## 12              0.13851498     100000       62000             no      40000
+## 13              0.06523569     103000       78000            yes      50000
+## 14              0.05164133      90000       57000             no      41000
+## 15              0.04663336     124000       90000            yes      62000
+## 16              0.08160569     110000       80000            yes      54000
+## 17              0.04661565     106000       75000            yes      47000
+## 18              0.03169782     105000       80000            yes      54000
+## 19              0.03927060     111000       84500            yes      60000
+## 20              0.03846154      76000       55000             no      40000
+## 21              0.04100487     100000       68000             no      45000
+## 22              0.04903231     115000       77000            yes      50000
+## 23              0.04529982      98000       65000             no      44000
+## 24              0.03871464     116000       89000            yes      64500
+## 25              0.05958663     109000       81000            yes      54000
+## 26              0.02284832     131000       94000            yes      64000
+## 27              0.04089493     130000       85000            yes      52000
+## 28              0.02555274     112000       76000            yes      55000
+## 29              0.04004921     104000       80000            yes      55000
+## 30              0.04865767      96000       65000             no      45000
+## 31              0.07424381     150000      110000            yes      80000
+## 32              0.05446065     110000       85000            yes      60000
+## 33              0.04202330     100000       70000             no      46000
+## 34              0.02534283     108000       80000            yes      55000
+## 35              0.04535833     105000       74000             no      48400
+## 36              0.04185735     131000       88000            yes      59000
+## 37              0.06100455      82000       58000             no      40000
+## 38              0.02126673     110000       84000            yes      62000
+## 39              0.04999576     114000       84000            yes      62000
+## 40              0.05890331     110000       78000            yes      56000
+## 41              0.02012491      74000       55000             no      43600
+## 42              0.00886918     106000       80000            yes      55000
+## 43              0.02932492     104000       68000             no      45000
+## 44              0.04129642     110000       78000            yes      52000
+## 45              0.04211127     103000       70000             no      48000
+## 46              0.06006150      70110       50100             no      38000
+## 47              0.03842167      80000       53000             no      38000
+## 48              0.02949596     100000       70000             no      50000
+## 49              0.05036224      70000       50750             no      40000
+## 50              0.03714270      80000       58000             no      42000
+## 51              0.02531788      85000       60000             no      44000
+## 52              0.04409251     150000       95000            yes      62000
+## 53              0.01947149     200000      124000            yes      80000
+## 54              0.03125399     100000       67000             no      45000
+## 55              0.06471597     100000       70000             no      47000
+## 56              0.05488957     104000       72000             no      50000
+## 57              0.03885281      80000       58000             no      42000
+## 58              0.06766724      85000       58600             no      44000
+## 59              0.05125341     150000       94000            yes      60000
+## 60              0.09463767     150000      107000            yes      70000
+## 61              0.03619812     125000       95000            yes      69000
+## 62              0.05194003     108000       79000            yes      51000
+## 63              0.01998520     120000       80000            yes      53000
+## 64              0.03527623     100000       68000             no      48000
+## 65              0.03113024     105000       73000             no      50000
+## 66              0.03460120     122000       90000            yes      60000
+## 67              0.03665403      93000       62000             no      45000
+## 68              0.05967189      96000       66000             no      45000
+## 69              0.07033222     102000       72000             no      49800
+## 70              0.01466782      91000       65000             no      50000
+## 71              0.03891879     121000       76000            yes      50000
+## 72              0.03599848     139000      100000            yes      65000
+## 73              0.02810650     142000       86000            yes      55000
+## 74              0.03422950     130000       98000            yes      70000
+## 75              0.02130079     130000       97000            yes      75000
+## 76              0.05690886     140000      100000            yes      72000
+## 77              0.02716594      65000       50000             no      40000
+## 78              0.04187831      93000       64000             no      45000
+## 79              0.05847484     100000       69000             no      47000
+## 80              0.01232653     104000       70300             no      48000
+## 81              0.01741535      96000       70000             no      51000
+## 82              0.08645247      81000       54000             no      45000
+## 83              0.03544933     138000      100000            yes      75000
+## 84              0.05932907     100000       65000             no      47000
+## 85              0.03295627     110000       72000             no      50000
+## 86              0.03862462     135000       98000            yes      70000
+## 87              0.02870639     140800      105000            yes      75000
+## 88              0.06108066     100000       71000             no      48800
+## 89              0.03189197     145000      102000            yes      70000
+## 90              0.10289017     131500       98000            yes      65000
+## 91              0.05365751      93000       65000             no      45000
+## 92              0.02730545      90000       60000             no      41000
+## 93              0.02205790     100000       70000             no      52000
+## 94              0.06392498     115000       70000             no      46000
+## 95              0.02401815     100000       65000             no      48400
+## 96              0.04376842     175000      100000            yes      63000
+## 97              0.02788530      85000       65000             no      50000
+## 98              0.03015249     100000       68500             no      48000
+## 99              0.03623051     145000      106000            yes      80000
+## 100             0.03293845      69000       48000             no      32000
+## 101             0.02221827     114000       90000            yes      50000
+## 102             0.03463734      83000       61000             no      46200
+## 103             0.03970294     120000       80000            yes      50000
+## 104             0.05884949     110000       75000            yes      50000
+## 105             0.02036289      70000       55000             no      44000
+## 106             0.04530453     106000       75000            yes      50000
+## 107             0.05454545     123000       74000             no      37900
+## 108             0.03334986      75000       58000             no      45000
+## 109             0.04147201      85000       60000             no      41000
+## 110             0.02840349      75000       59000             no      45000
+## 111             0.05083188      98000       65000             no      42000
+## 112             0.05128392     120000       92000            yes      70000
+## 113             0.04970116     100000       65000             no      45100
+## 114             0.03757089      70000       53000             no      40000
+## 115             0.04058410     100000       67000             no      46600
+## 116             0.01875968      69000       55000             no      43000
+## 117             0.02740824     125000       84000            yes      55000
+## 118             0.02482364     140000      111000            yes      85000
+## 119             0.04352306     100000       68000             no      45000
+## 120             0.03755603      97000       64000             no      45000
+## 121             0.04481724     120000       75000            yes      50000
+## 122             0.03781818     135000       80000            yes      54000
+## 123             0.02664718     110000       82000            yes      52000
+## 124             0.03857466     150000      102000            yes      70000
+## 125             0.02793169     140000      107000            yes      80000
+## 126             0.03897583     125000       80000            yes      51000
+## 127             0.04805093     105000       73000             no      52000
+## 128             0.02863239     135000      100000            yes      65000
+## 129             0.04235759     125000       92000            yes      64000
+## 130             0.03857805     100000       67000             no      48000
+## 131             0.03175695      84000       60000             no      45000
+## 132             0.03764496     127000       89000            yes      60000
+## 133             0.03880891     150000       92000            yes      60000
+## 134             0.04528078     132000       86000            yes      55000
+## 135             0.04574565     110000       81000            yes      56000
+## 136             0.02586095     108000       65000             no      43200
+## 137             0.03055566     110000       68000             no      45000
+## 138             0.02290638     135000      100000            yes      74000
+## 139             0.02229106      80000       61000             no      48000
+## 140             0.01768510     130000       90000            yes      55000
+## 141             0.02606824     130000       82000            yes      55000
+## 142             0.02896772     147000      100000            yes      74000
+## 143             0.04534244     135000       95000            yes      55000
+## 144             0.03107441      75000       58000             no      45100
+## 145             0.01153802     148000      110000            yes      85000
+## 146             0.03122649     136000       89000            yes      60000
+## 147             0.01424816      80000       60000             no      47500
+## 148             0.02218759      84000       62000             no      48000
+## 149             0.03215909     141000       85000            yes      53000
+## 150             0.03889024     105000       65000             no      41900
+## 151             0.02246486      75000       58000             no      46000
+## 152             0.03321006     110000       70000             no      42000
+## 153             0.02110471     174000       95000            yes      56000
+## 154             0.02002861     150000       96000            yes      60000
+## 155             0.02998137     160000      100000            yes      62000
+## 156             0.02092066     151000       90000            yes      55000
+## 157             0.01844758     150000       90000            yes      49000
+## 158             0.02993678      76000       52000             no      41996
+## 159             0.02820749     155000       85000            yes      50000
+## 160             0.02422993     137000      105000            yes      70000
+## 161             0.02092797     230000      110000            yes      65000
+## 162             0.03541185     140000      100000            yes      62000
+## 163             0.01761115      90000       58000             no      45000
+## 164             0.02560025      84000       61000             no      45500
+## 165             0.02421187     175000       96000            yes      55000
+## 166             0.01942385     120000       78000            yes      48000
+## 167             0.02177728     125000       95000            yes      65000
+## 168             0.01428620      83000       65000             no      50000
+## 169             0.03559968      65000       50000             no      36000
+## 170             0.04495803      95000       70000            yes      47000
+## 171             0.02168687     294000      135000            yes      70000
+## 172             0.05140030      70000       56000             no      42000
+## 173             0.01676074      86000       65000             no      50000
+##     nongrad_total nongrad_employed nongrad_employed_fulltime_yearround
+## 1           86062            73607                               62435
+## 2          461977           347166                              250596
+## 3          179335           145597                              113579
+## 4           37575            29738                               23249
+## 5           53819            43163                               34231
+## 6            8921             6967                                6063
+## 7         1029181           817906                              662346
+## 8           89169            71781                               61335
+## 9           28314            22024                               18381
+## 10         163435           127832                              100330
+## 11         116158            93915                               63674
+## 12          14842            11921                                9949
+## 13          27999            23069                               20418
+## 14         190020           153722                              117581
+## 15         121260            94538                               80650
+## 16          48776            41552                               34402
+## 17          95860            72005                               58441
+## 18          60571            50092                               44199
+## 19          81076            64389                               56559
+## 20           7044             5220                                3556
+## 21         695361           565748                              490943
+## 22        2996892          2253649                             1882507
+## 23          67082            53419                               45563
+## 24         150110           129179                              115177
+## 25          35883            29740                               26303
+## 26          52043            43074                               38454
+## 27        2056867          1510380                             1264413
+## 28         159438           117087                               89592
+## 29         242194           209994                              184959
+## 30         896111           716886                              557992
+## 31           7998             6666                                6040
+## 32          90886            71204                               62854
+## 33         386113           287521                              222172
+## 34          59740            47608                               23707
+## 35          35992            29092                               25129
+## 36        1708418          1282267                             1065334
+## 37         541433           363977                              247638
+## 38        1686899          1256606                              909187
+## 39          74072            63354                               55946
+## 40          18500            12772                               10648
+## 41          41018            32600                               24260
+## 42          11069             8699                                6701
+## 43         123984            86631                               72409
+## 44          67649            46815                               39048
+## 45         575676           387303                              288616
+## 46          78105            58298                               43307
+## 47          48548            36008                               21969
+## 48          77101            60690                               48256
+## 49          74183            53276                               35035
+## 50         378778           223314                              146322
+## 51         296901           245267                              186901
+## 52         745903           615192                              528057
+## 53          18483            13108                               11334
+## 54          76190            60241                               49506
+## 55         178250           135403                              112085
+## 56          74951            58763                               46734
+## 57          50175            38047                               26514
+## 58         156841           120476                               75712
+## 59          69826            53771                               45965
+## 60          46013            26479                               21870
+## 61         739583           623930                              544970
+## 62         101621            79713                               64350
+## 63          33049            25557                               22496
+## 64          94504            78828                               61721
+## 65         108758            78756                               60831
+## 66          53532            41524                               36059
+## 67          41530            33531                               24530
+## 68          57635            40252                               29613
+## 69         279577           207090                              159313
+## 70           6242             4654                                3917
+## 71          61368            45218                               35337
+## 72         482878           346258                              304610
+## 73         401739           290699                              229673
+## 74         338011           247251                              212776
+## 75         141270           119738                              106089
+## 76          10460             7161                                6270
+## 77         141496           100158                               64302
+## 78         627027           422359                              318869
+## 79         122828            77095                               55727
+## 80          94910            74896                               61629
+## 81         234752           187311                              123316
+## 82           8092             5978                                4707
+## 83         547538           395914                              348301
+## 84          43298            27799                               18630
+## 85          22853            16298                               12431
+## 86         131402            96312                               82220
+## 87           5941             3797                                3165
+## 88          10307             6486                                4928
+## 89          15759            10596                                9044
+## 90           6996             5711                                5020
+## 91          82188            54192                               35955
+## 92          72590            49431                               34327
+## 93          90171            69217                               50755
+## 94          45113            34373                               24209
+## 95          56400            38530                               26254
+## 96         700637           496450                              409200
+## 97         270939           185279                              133212
+## 98          47568            36104                               27108
+## 99         645159           471850                              413582
+## 100        220424           154911                              116980
+## 101          9739             7311                                6029
+## 102        221750           122937                               89949
+## 103         28562            21509                               17822
+## 104         53242            37006                               30763
+## 105       1379686           762114                              476855
+## 106         16994            11009                                8347
+## 107          4278             1650                                1671
+## 108       1388324           805371                              573139
+## 109        251339           174414                              109664
+## 110        218268           143673                               90398
+## 111         68993            41522                               28718
+## 112         20152            13729                               11755
+## 113        126116            90622                               62339
+## 114        301611           211272                              157896
+## 115       1018267           650188                              457320
+## 116         82941            54460                               35610
+## 117        103388            72682                               57959
+## 118        173397           120500                               88001
+## 119         52934            31878                               22253
+## 120       1322161           938016                              689146
+## 121         90834            65609                               46517
+## 122          8495             5676                                4945
+## 123         12457             9847                                8754
+## 124        173332           120146                              103629
+## 125         60077            41023                               36578
+## 126        657090           439435                              338441
+## 127         14312            10935                                8899
+## 128         17276            13704                               11253
+## 129         22210            17024                               13665
+## 130        216138           137925                               92812
+## 131        118529            71644                               49027
+## 132        407046           262174                              202078
+## 133        674509           492011                              398808
+## 134         66901            49168                               38384
+## 135         10985             8641                                7475
+## 136         25601            19978                               15600
+## 137         29609            20627                               14514
+## 138         12555             6692                                5415
+## 139        217166           123329                               86002
+## 140          7977             5920                                4890
+## 141         16704            10913                                7898
+## 142         18682            13391                               11561
+## 143          5156             4206                                3116
+## 144        169782           102263                               63345
+## 145          8688             6730                                6258
+## 146         12158             9478                                7456
+## 147         63346            42354                               27419
+## 148         53851            34223                               23656
+## 149         63129            42544                               33085
+## 150        184971           124979                               90406
+## 151        140128           100814                               68067
+## 152         13863             9100                                6255
+## 153        718231           512669                              394936
+## 154          3899             2720                                2163
+## 155        282037           180034                              145119
+## 156         34819            25501                               18261
+## 157         12362             9626                                8051
+## 158         15850             6798                                4292
+## 159         20564            15914                               11602
+## 160          4506             3126                                2463
+## 161         52896            34015                               25588
+## 162        111298            72752                               57486
+## 163          6993             4802                                3580
+## 164         13515             8561                                5713
+## 165         58550            43165                               34108
+## 166          5255             4020                                3187
+## 167          5643             4619                                4001
+## 168         59427            39683                               24385
+## 169         16781            12377                                8502
+## 170          6519             4368                                3033
+## 171         26320            16221                               12185
+## 172          2232             1328                                 980
+## 173          4003             3079                                2434
+##     nongrad_unemployed nongrad_unemployment_rate nongrad_p25th nongrad_median
+## 1                 3928                0.05066099         47000          65000
+## 2                25484                0.06838588         34000          48000
+## 3                 7409                0.04842294         35000          50000
+## 4                 1661                0.05289977         29000          41600
+## 5                 3389                0.07280031         36000          52000
+## 6                  518                0.06920508         34000          50000
+## 7                45519                0.05271911         40000          60000
+## 8                 1869                0.02537678         38000          55000
+## 9                 2222                0.09164398         40000          60000
+## 10                8706                0.06376247         37800          51000
+## 11                8160                0.07994122         32000          50000
+## 12                 653                0.05193256         32400          50000
+## 13                 998                0.04146757         42000          61000
+## 14               12816                0.07695541         35000          50000
+## 15                4326                0.04375708         45000          69000
+## 16                2476                0.05623694         37700          58000
+## 17                3694                0.04879853         38000          55000
+## 18                3316                0.06208808         43000          65000
+## 19                3431                0.05058980         48000          70000
+## 20                1001                0.16090661         30000          46000
+## 21               29133                0.04897282         36000          52000
+## 22              136978                0.05729794         40000          60000
+## 23                3189                0.05633479         35000          50000
+## 24                5690                0.04218909         50000          72000
+## 25                2102                0.06601344         41600          60000
+## 26                1827                0.04068952         46800          66000
+## 27               77999                0.04910604         40000          60000
+## 28                4193                0.03457289         45900          60000
+## 29               10439                0.04735679         45000          65000
+## 30               46564                0.06099155         36100          52000
+## 31                 266                0.03837276         53000          76000
+## 32                4210                0.05582518         48000          68000
+## 33               18390                0.06011552         36000          53000
+## 34                1443                0.02941836         38000          56000
+## 35                1475                0.04825465         40000          65000
+## 36               68954                0.05103088         44000          65000
+## 37               26518                0.06790868         30000          46000
+## 38               32472                0.02519010         50000          64000
+## 39                3333                0.04997976         48500          70000
+## 40                 889                0.06507576         52000          80000
+## 41                2573                0.07315270         34200          44000
+## 42                 605                0.06502579         45000          64000
+## 43                2352                0.02643201         34000          50000
+## 44                1885                0.03870637         42000          59000
+## 45               27049                0.06528025         34000          50000
+## 46                4625                0.07350253         30000          38700
+## 47                3729                0.09384201         28000          40000
+## 48                3413                0.05324244         38000          53000
+## 49                4739                0.08168577         26000          38000
+## 50               12312                0.05225230         30000          42000
+## 51               10704                0.04181724         33700          45000
+## 52               28844                0.04478632         45000          70000
+## 53                 580                0.04237288         75000         126000
+## 54                1899                0.03056003         35000          50000
+## 55                8719                0.06049736         39000          55000
+## 56                4137                0.06577107         40000          57000
+## 57                2837                0.06939145         30000          42000
+## 58               10435                0.07971064         30000          45000
+## 59                3186                0.05593694         47000          70000
+## 60                1554                0.05543467         50000          75000
+## 61               31060                0.04742057         52000          80000
+## 62                4430                0.05264847         37000          52000
+## 63                 734                0.02791830         40000          63000
+## 64                3837                0.04641626         40000          55000
+## 65                5680                0.06726989         40000          55000
+## 66                2305                0.05259075         50000          70000
+## 67                1665                0.04730651         33000          48700
+## 68                2493                0.05832261         34000          46000
+## 69               18651                0.08262123         42000          64000
+## 70                 264                0.05368036         41000          65000
+## 71                3523                0.07228001         35000          50000
+## 72               16636                0.04584259         50000          75000
+## 73               13226                0.04351732         40000          59000
+## 74               13275                0.05095461         56000          80000
+## 75                6639                0.05253329         60000          81000
+## 76                 366                0.04862495         52000          95000
+## 77                4956                0.04714881         28000          37000
+## 78               28396                0.06299653         35000          49000
+## 79                5499                0.06657869         35000          50000
+## 80                3101                0.03975794         32000          48000
+## 81                4158                0.02171631         42000          63000
+## 82                 239                0.03844298         39000          55000
+## 83               16897                0.04093156         60000          82000
+## 84                2398                0.07941186         30625          47000
+## 85                 681                0.04010837         40000          63000
+## 86                5047                0.04979331         50000          76000
+## 87                   0                0.00000000         57000          87000
+## 88                 660                0.09235936         36300          49000
+## 89                 449                0.04065188         60000         100000
+## 90                 150                0.02559290         53000          92000
+## 91                3731                0.06441310         31000          45500
+## 92                2326                0.04494078         33000          45000
+## 93                3592                0.04933456         37000          52000
+## 94                2680                0.07232883         32000          50000
+## 95                2503                0.06099968         35000          50000
+## 96               29246                0.05563291         44000          70000
+## 97                8119                0.04198079         35000          50000
+## 98                1804                0.04758890         35000          50000
+## 99               24278                0.04893495         62000          90000
+## 100               6305                0.03910902         28000          40000
+## 101                419                0.05420440         44000          60000
+## 102               4880                0.03817959         36000          50000
+## 103               1118                0.04941000         40000          65000
+## 104               2609                0.06585889         40000          58000
+## 105              28714                0.03630878         32000          40000
+## 106               1044                0.08661744         41000          63000
+## 107                187                0.10179641         39000          64000
+## 108              35180                0.04185350         32000          44000
+## 109               8834                0.04820789         32000          46400
+## 110               5955                0.03979870         32200          44000
+## 111               3414                0.07597472         31000          49000
+## 112                880                0.06023684         55000          78000
+## 113               6369                0.06566589         30000          45000
+## 114              12645                0.05647182         30000          40000
+## 115              45414                0.06528733         34600          50000
+## 116               1804                0.03206313         30000          40000
+## 117               4848                0.06253063         43000          66000
+## 118               4110                0.03298291         80000         107000
+## 119               2111                0.06210833         32000          47000
+## 120              64552                0.06438666         32200          46000
+## 121               4630                0.06591780         34600          50000
+## 122                238                0.04024349         38000          60000
+## 123                384                0.03753299         39000          60000
+## 124               5413                0.04311121         62000          90000
+## 125               1656                0.03880128         60000          85000
+## 126              28790                0.06148753         35000          52000
+## 127                653                0.05635140         40000          54000
+## 128                773                0.05339504         48000          76000
+## 129                874                0.04883227         45000          75000
+## 130               8372                0.05722605         35000          50000
+## 131               3206                0.04283233         35000          47000
+## 132              14142                0.05118053         43000          68000
+## 133              33077                0.06299325         40000          60000
+## 134               3157                0.06033445         40000          60000
+## 135                304                0.03398547         55000          71900
+## 136                802                0.03859480         35000          55000
+## 137               1851                0.08234718         32000          47000
+## 138                310                0.04427307         66000          98000
+## 139               5494                0.04264766         35000          45000
+## 140                238                0.03864891         38000          58000
+## 141                943                0.07953779         39000          52000
+## 142                660                0.04697175         48000          70000
+## 143                184                0.04191344         40000          55000
+## 144               4956                0.04622315         33300          43200
+## 145                144                0.02094850         65000         100000
+## 146                441                0.04446013         41800          63000
+## 147               1610                0.03662087         35000          45000
+## 148               1460                0.04091584         36000          48000
+## 149               2062                0.04622697         40500          60000
+## 150               9196                0.06853736         30000          46000
+## 151               4629                0.04390050         35000          43000
+## 152                327                0.03468760         32000          50000
+## 153              28639                0.05290703         37000          54000
+## 154                298                0.09874089         56000          85000
+## 155              10316                0.05419490         40000          60000
+## 156               1284                0.04793728         35000          50000
+## 157                547                0.05376978         48000          70000
+## 158                743                0.09852805         30000          40000
+## 159                679                0.04092087         31000          50000
+## 160                 57                0.01790763         38000          66000
+## 161               1680                0.04706541         35000          55000
+## 162               3832                0.05003656         43000          74000
+## 163                360                0.06974041         30000          40000
+## 164                655                0.07107205         34000          40000
+## 165               2888                0.06271035         36000          55000
+## 166                192                0.04558405         36000          56000
+## 167                134                0.02819272         65000          80000
+## 168               1578                0.03824435         32700          44000
+## 169                835                0.06320012         25000          40000
+## 170                357                0.07555556         30000          46000
+## 171               1012                0.05872454         35000          51000
+## 172                169                0.11289245         27000          42000
+## 173                  0                0.00000000         45000          58000
+##     nongrad_p75th grad_share grad_premium   gradtotal
+## 1           98000 0.09631963   0.15384615 -118499.023
+## 2           71000 0.10441977   0.25000000  -73808.023
+## 3           75000 0.11983686   0.30000000 -103255.023
+## 4           60000 0.12587819   0.12980769 -122261.023
+## 5           78000 0.14475273   0.09615385 -118563.023
+## 6           75000 0.14737647   0.50000000 -126130.023
+## 7           91500 0.15653139   0.33333333   63323.977
+## 8           80000 0.16396486   0.21818182 -110184.023
+## 9           85000 0.16539425   0.41666667 -122061.023
+## 10          78000 0.17190659   0.17647059  -93744.023
+## 11          75000 0.17432810   0.14000000 -103147.023
+## 12          75000 0.17677076   0.24000000 -124485.023
+## 13          85000 0.17804720   0.27868853 -121607.023
+## 14          72000 0.18423595   0.14000000  -84757.023
+## 15         100000 0.18436806   0.30434783 -100262.023
+## 16          84000 0.18626650   0.37931034 -116507.023
+## 17          85000 0.19046051   0.36363636 -105119.023
+## 18          90000 0.19653256   0.23076923 -112856.023
+## 19          99000 0.19695724   0.20714286 -107787.023
+## 20          60000 0.19744787   0.19565217 -125939.023
+## 21          75000 0.21302664   0.30769231   60555.977
+## 22          88000 0.21347425   0.28333333  685726.977
+## 23          75000 0.21615779   0.30000000 -109173.023
+## 24         100000 0.21850271   0.23611111  -85702.023
+## 25          80000 0.22285751   0.35000000 -117382.023
+## 26          92000 0.22438486   0.42424242 -112616.023
+## 27          98000 0.22669260   0.41666667  475291.977
+## 28          77000 0.22777974   0.26666667  -80643.023
+## 29          90000 0.22799558   0.23076923  -56145.023
+## 30          80000 0.22894953   0.25000000  138411.977
+## 31         125000 0.23610315   0.44736842 -125200.023
+## 32          92000 0.23651515   0.25000000  -99517.023
+## 33          80100 0.23703035   0.32075472   -7719.023
+## 34          76000 0.23795188   0.42857143 -109018.023
+## 35          94000 0.24570375   0.13846154 -115948.023
+## 36         100000 0.25006727   0.35384615  442004.977
+## 37          70000 0.25107511   0.26086957   53841.977
+## 38          80000 0.25370537   0.31250000  445794.977
+## 39          96000 0.25832324   0.20000000 -101873.023
+## 40         106000 0.25899223  -0.02500000 -121206.023
+## 41          58000 0.25991015   0.25000000 -113267.023
+## 42          80000 0.26103211   0.25000000 -123762.023
+## 43          80000 0.26327173   0.36000000  -83366.023
+## 44          80000 0.26756675   0.32203390 -102959.023
+## 45          75000 0.27096952   0.40000000   86297.977
+## 46          53000 0.27254184   0.29457364  -98410.023
+## 47          60000 0.27401603   0.32500000 -109348.023
+## 48          75000 0.27576133   0.32075472  -98315.023
+## 49          59000 0.28023791   0.33552632  -98789.023
+## 50          60000 0.28242988   0.38095238   21411.977
+## 51          64000 0.28696414   0.33333333   -8183.023
+## 52         100000 0.28795679   0.35714286  173977.977
+## 53         215000 0.28807488  -0.01587302 -120193.023
+## 54          75000 0.28909334   0.34000000  -96689.023
+## 55          80000 0.28926865   0.27272727  -55124.023
+## 56          85000 0.29248792   0.26315789  -96687.023
+## 57          69000 0.29751488   0.38095238 -106422.023
+## 58          65000 0.29793958   0.30222222  -61112.023
+## 59         101000 0.30199128   0.34285714  -97462.023
+## 60         108000 0.30483457   0.42666667 -107495.023
+## 61         106000 0.30489340   0.18750000  196729.977
+## 62          75000 0.30904381   0.51923077  -82220.023
+## 63          99000 0.30930636   0.26984127 -112872.023
+## 64          76000 0.31576356   0.23636364  -84060.023
+## 65          80000 0.32408564   0.32727273  -75525.023
+## 66         100000 0.32718315   0.28571429 -101640.023
+## 67          74000 0.34147308   0.27310062 -106137.023
+## 68          70000 0.34407293   0.43478261  -97439.023
+## 69          95000 0.34652621   0.12500000   20582.977
+## 70          89000 0.34823013   0.00000000 -124337.023
+## 71          70000 0.35063753   0.52000000  -94535.023
+## 72         100000 0.35732035   0.33333333  140800.977
+## 73          86000 0.35742939   0.45762712   95794.977
+## 74         105000 0.36744112   0.22500000   68671.977
+## 75         110000 0.36755726   0.19753086  -45570.023
+## 76         125000 0.36770840   0.05263158 -121589.023
+## 77          48000 0.36811268   0.35135135  -45242.023
+## 78          71000 0.37028854   0.30612245  241037.977
+## 79          75000 0.37389514   0.38000000  -54322.023
+## 80          75000 0.37442739   0.46458333  -70865.023
+## 81          80000 0.37737676   0.11111111   14612.977
+## 82          78000 0.38341969  -0.01818182 -122640.023
+## 83         110000 0.38814366   0.21951219  219669.977
+## 84          73000 0.38823031   0.38297872 -100195.023
+## 85          92000 0.38853214   0.14285714 -113151.023
+## 86         104000 0.39777170   0.28947368  -40881.023
+## 87         125000 0.39874507   0.20689655 -123732.023
+## 88          75000 0.40470140   0.44897959 -120665.023
+## 89         128000 0.40666416   0.02000000 -116871.023
+## 90         136000 0.40741996   0.06521739 -122862.023
+## 91          73000 0.40809771   0.42857143  -71006.023
+## 92          62000 0.41533232   0.33333333  -76106.023
+## 93          75000 0.41619889   0.34615385  -63388.023
+## 94          72000 0.41911102   0.40000000  -95123.023
+## 95          70000 0.41939469   0.30000000  -86932.023
+## 96         111000 0.42488288   0.42857143  389941.977
+## 97          68000 0.42724355   0.30000000   74432.977
+## 98          70000 0.42765699   0.37000000  -92129.023
+## 99         118000 0.42801301   0.17777778  355094.977
+## 100         58000 0.42878171   0.20000000   37787.977
+## 101         97000 0.42893163   0.50000000 -120357.023
+## 102         72000 0.42903269   0.22000000   38953.977
+## 103         93000 0.42963836   0.23076923 -106157.023
+## 104         86000 0.44483489   0.29310345  -85011.023
+## 105         51000 0.44485982   0.37500000  977934.977
+## 106         85000 0.44666580   0.19047619 -113954.023
+## 107         90000 0.44750097   0.15625000 -124207.023
+## 108         60000 0.44843231   0.31818182 1001054.977
+## 109         70000 0.44924313   0.29310345   77340.977
+## 110         57000 0.45637810   0.34090909   55566.977
+## 111         70000 0.45654691   0.32653061  -69712.023
+## 112        105000 0.45832325   0.17948718 -110621.023
+## 113         70000 0.46105195   0.44444444  -19784.023
+## 114         54000 0.46374070   0.32500000  133151.977
+## 115         78000 0.46398537   0.34000000  753760.977
+## 116         52000 0.46496581   0.37500000  -55593.023
+## 117        100000 0.46602624   0.27272727  -37440.023
+## 118        125000 0.46751117   0.03738318   24565.977
+## 119         76000 0.46938653   0.44680851  -80846.023
+## 120         70000 0.47246899   0.39130435 1056485.977
+## 121         75000 0.48166831   0.50000000  -43263.023
+## 122         89000 0.48433896   0.33333333 -119693.023
+## 123         90000 0.48516284   0.36666667 -115933.023
+## 124        123000 0.49239167   0.13333333   40463.977
+## 125        110000 0.49339731   0.25882353  -69161.023
+## 126         83000 0.49551786   0.53846154  517741.977
+## 127         81000 0.49586107   0.35185185 -113595.023
+## 128        110000 0.49707432   0.31578947 -110597.023
+## 129        106000 0.49731797   0.22666667 -105699.023
+## 130         70000 0.49911706   0.34000000   87703.977
+## 131         65000 0.50114477   0.27659575   -8599.023
+## 132        100000 0.50667190   0.30882353  290383.977
+## 133         95000 0.50774174   0.53333333  568052.977
+## 134         90000 0.50900511   0.43333333  -58317.023
+## 135        100000 0.51622848   0.12656467 -115950.023
+## 136         75000 0.52008623   0.18181818  -99928.023
+## 137         75000 0.52023786   0.44680851  -95565.023
+## 138        123000 0.52100263   0.02040816 -114016.023
+## 139         62000 0.52489860   0.35555556  112255.977
+## 140         80000 0.53029500   0.55172414 -118666.023
+## 141         85000 0.53053596   0.57692308 -108795.023
+## 142        100000 0.53363788   0.42857143 -106295.023
+## 143         93000 0.53708027   0.72727273 -121690.023
+## 144         55000 0.54073625   0.34259259   72228.977
+## 145        130000 0.54768846   0.10000000 -117152.023
+## 146         94000 0.55695649   0.41269841 -112388.023
+## 147         62000 0.56062203   0.33333333  -46846.023
+## 148         63000 0.56272736   0.29166667  -58371.023
+## 149         85000 0.57039028   0.41666667  -43856.023
+## 150         72000 0.57516118   0.41304348  122747.977
+## 151         54000 0.57871825   0.34883721   64822.977
+## 152         76000 0.59013098   0.40000000 -107712.023
+## 153         80000 0.60191342   0.75925926  958304.977
+## 154        109000 0.61886608   0.12941177 -121341.023
+## 155         90000 0.62234993   0.66666667  337111.977
+## 156         78000 0.63030091   0.80000000  -68309.023
+## 157        104000 0.64185764   0.28571429 -105517.023
+## 158         55000 0.64630799   0.30000000  -98709.023
+## 159         75000 0.64809364   0.70000000  -89800.023
+## 160        105000 0.66269930   0.59090909 -118819.023
+## 161         88000 0.66797020   1.00000000  -21257.023
+## 162        110000 0.67170668   0.35135135  100049.977
+## 163         79000 0.67355989   0.45000000 -113243.023
+## 164         70000 0.68167044   0.52500000  -98731.023
+## 165         85000 0.68763671   0.74545454    1219.977
+## 166         90000 0.69731006   0.39285714 -115566.023
+## 167        103000 0.71538811   0.18750000 -113488.023
+## 168         60000 0.75396112   0.47727273   54435.977
+## 169         50000 0.75535405   0.25000000  -75860.023
+## 170         70000 0.77701385   0.52173913 -104956.023
+## 171         87000 0.81371779   1.64705882  -12701.023
+## 172         51000 0.89888099   0.33333333 -107831.023
+## 173         79000 0.93117499   0.12068966  -73513.023</code></pre>
+<pre class="r"><code>CGS1 &lt;- read.csv(&quot;CGS.csv&quot;)
+
+manova1 &lt;- manova(cbind(grad_total, grad_employed) ~ major_category, data=CGS1)
+summary(manova1)</code></pre>
+<pre><code>##                 Df  Pillai approx F num Df den Df    Pr(&gt;F)    
+## major_category  15 0.34442   2.1774     30    314 0.0005347 ***
+## Residuals      157                                             
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(manova1)</code></pre>
+<pre><code>##  Response grad_total :
+##                 Df     Sum Sq    Mean Sq F value Pr(&gt;F)
+## major_category  15 7.7748e+11 5.1832e+10  1.0831 0.3762
+## Residuals      157 7.5134e+12 4.7856e+10               
+## 
+##  Response grad_employed :
+##                 Df     Sum Sq    Mean Sq F value Pr(&gt;F)
+## major_category  15 3.5823e+11 2.3882e+10  0.9304 0.5319
+## Residuals      157 4.0298e+12 2.5667e+10</code></pre>
+<pre class="r"><code>CGS1 %&gt;% group_by(major_category) %&gt;% summarize(mean(grad_total),mean(grad_employed))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 16 x 3
+##    major_category                      `mean(grad_total)` `mean(grad_employed)`
+##    &lt;fct&gt;                                            &lt;dbl&gt;                 &lt;dbl&gt;
+##  1 Agriculture &amp; Natural Resources                 24134.                17929.
+##  2 Arts                                            72552                 52806.
+##  3 Biology &amp; Life Science                         118325.                97524 
+##  4 Business                                       209146.               163423.
+##  5 Communications &amp; Journalism                    115720                 92098.
+##  6 Computers &amp; Mathematics                         83620.                65146.
+##  7 Education                                      246581.               152323.
+##  8 Engineering                                     73535.                56364.
+##  9 Health                                         122361.                95733.
+## 10 Humanities &amp; Liberal Arts                      188398.               132438.
+## 11 Industrial Arts &amp; Consumer Services             45317                 34191.
+## 12 Interdisciplinary                               14405                 12708 
+## 13 Law &amp; Public Policy                             56170.                44966.
+## 14 Physical Sciences                              105248.                77036.
+## 15 Psychology &amp; Social Work                       181172.               139548.
+## 16 Social Science                                 204412.               153508.</code></pre>
+<pre class="r"><code>pairwise.t.test(CGS1$grad_total, CGS1$major_category, p.adj=&quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  CGS1$grad_total and CGS1$major_category 
+## 
+##                                     Agriculture &amp; Natural Resources Arts
+## Arts                                -                               -   
+## Biology &amp; Life Science              -                               -   
+## Business                            -                               -   
+## Communications &amp; Journalism         -                               -   
+## Computers &amp; Mathematics             -                               -   
+## Education                           -                               -   
+## Engineering                         -                               -   
+## Health                              -                               -   
+## Humanities &amp; Liberal Arts           -                               -   
+## Industrial Arts &amp; Consumer Services -                               -   
+## Interdisciplinary                   -                               -   
+## Law &amp; Public Policy                 -                               -   
+## Physical Sciences                   -                               -   
+## Psychology &amp; Social Work            -                               -   
+## Social Science                      -                               -   
+##                                     Biology &amp; Life Science Business
+## Arts                                -                      -       
+## Biology &amp; Life Science              -                      -       
+## Business                            -                      -       
+## Communications &amp; Journalism         -                      -       
+## Computers &amp; Mathematics             -                      -       
+## Education                           -                      -       
+## Engineering                         -                      -       
+## Health                              -                      -       
+## Humanities &amp; Liberal Arts           -                      -       
+## Industrial Arts &amp; Consumer Services -                      -       
+## Interdisciplinary                   -                      -       
+## Law &amp; Public Policy                 -                      -       
+## Physical Sciences                   -                      -       
+## Psychology &amp; Social Work            -                      -       
+## Social Science                      -                      -       
+##                                     Communications &amp; Journalism
+## Arts                                -                          
+## Biology &amp; Life Science              -                          
+## Business                            -                          
+## Communications &amp; Journalism         -                          
+## Computers &amp; Mathematics             -                          
+## Education                           -                          
+## Engineering                         -                          
+## Health                              -                          
+## Humanities &amp; Liberal Arts           -                          
+## Industrial Arts &amp; Consumer Services -                          
+## Interdisciplinary                   -                          
+## Law &amp; Public Policy                 -                          
+## Physical Sciences                   -                          
+## Psychology &amp; Social Work            -                          
+## Social Science                      -                          
+##                                     Computers &amp; Mathematics Education
+## Arts                                -                       -        
+## Biology &amp; Life Science              -                       -        
+## Business                            -                       -        
+## Communications &amp; Journalism         -                       -        
+## Computers &amp; Mathematics             -                       -        
+## Education                           -                       -        
+## Engineering                         -                       -        
+## Health                              -                       -        
+## Humanities &amp; Liberal Arts           -                       -        
+## Industrial Arts &amp; Consumer Services -                       -        
+## Interdisciplinary                   -                       -        
+## Law &amp; Public Policy                 -                       -        
+## Physical Sciences                   -                       -        
+## Psychology &amp; Social Work            -                       -        
+## Social Science                      -                       -        
+##                                     Engineering Health
+## Arts                                -           -     
+## Biology &amp; Life Science              -           -     
+## Business                            -           -     
+## Communications &amp; Journalism         -           -     
+## Computers &amp; Mathematics             -           -     
+## Education                           -           -     
+## Engineering                         -           -     
+## Health                              -           -     
+## Humanities &amp; Liberal Arts           -           -     
+## Industrial Arts &amp; Consumer Services -           -     
+## Interdisciplinary                   -           -     
+## Law &amp; Public Policy                 -           -     
+## Physical Sciences                   -           -     
+## Psychology &amp; Social Work            -           -     
+## Social Science                      -           -     
+##                                     Humanities &amp; Liberal Arts
+## Arts                                -                        
+## Biology &amp; Life Science              -                        
+## Business                            -                        
+## Communications &amp; Journalism         -                        
+## Computers &amp; Mathematics             -                        
+## Education                           -                        
+## Engineering                         -                        
+## Health                              -                        
+## Humanities &amp; Liberal Arts           -                        
+## Industrial Arts &amp; Consumer Services -                        
+## Interdisciplinary                   -                        
+## Law &amp; Public Policy                 -                        
+## Physical Sciences                   -                        
+## Psychology &amp; Social Work            -                        
+## Social Science                      -                        
+##                                     Industrial Arts &amp; Consumer Services
+## Arts                                -                                  
+## Biology &amp; Life Science              -                                  
+## Business                            -                                  
+## Communications &amp; Journalism         -                                  
+## Computers &amp; Mathematics             -                                  
+## Education                           -                                  
+## Engineering                         -                                  
+## Health                              -                                  
+## Humanities &amp; Liberal Arts           -                                  
+## Industrial Arts &amp; Consumer Services -                                  
+## Interdisciplinary                   -                                  
+## Law &amp; Public Policy                 -                                  
+## Physical Sciences                   -                                  
+## Psychology &amp; Social Work            -                                  
+## Social Science                      -                                  
+##                                     Interdisciplinary Law &amp; Public Policy
+## Arts                                -                 -                  
+## Biology &amp; Life Science              -                 -                  
+## Business                            -                 -                  
+## Communications &amp; Journalism         -                 -                  
+## Computers &amp; Mathematics             -                 -                  
+## Education                           -                 -                  
+## Engineering                         -                 -                  
+## Health                              -                 -                  
+## Humanities &amp; Liberal Arts           -                 -                  
+## Industrial Arts &amp; Consumer Services -                 -                  
+## Interdisciplinary                   -                 -                  
+## Law &amp; Public Policy                 -                 -                  
+## Physical Sciences                   -                 -                  
+## Psychology &amp; Social Work            -                 -                  
+## Social Science                      -                 -                  
+##                                     Physical Sciences Psychology &amp; Social Work
+## Arts                                -                 -                       
+## Biology &amp; Life Science              -                 -                       
+## Business                            -                 -                       
+## Communications &amp; Journalism         -                 -                       
+## Computers &amp; Mathematics             -                 -                       
+## Education                           -                 -                       
+## Engineering                         -                 -                       
+## Health                              -                 -                       
+## Humanities &amp; Liberal Arts           -                 -                       
+## Industrial Arts &amp; Consumer Services -                 -                       
+## Interdisciplinary                   -                 -                       
+## Law &amp; Public Policy                 -                 -                       
+## Physical Sciences                   -                 -                       
+## Psychology &amp; Social Work            -                 -                       
+## Social Science                      -                 -                       
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(CGS1$grad_employed, CGS1$major_category, p.adj=&quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  CGS1$grad_employed and CGS1$major_category 
+## 
+##                                     Agriculture &amp; Natural Resources Arts
+## Arts                                -                               -   
+## Biology &amp; Life Science              -                               -   
+## Business                            -                               -   
+## Communications &amp; Journalism         -                               -   
+## Computers &amp; Mathematics             -                               -   
+## Education                           -                               -   
+## Engineering                         -                               -   
+## Health                              -                               -   
+## Humanities &amp; Liberal Arts           -                               -   
+## Industrial Arts &amp; Consumer Services -                               -   
+## Interdisciplinary                   -                               -   
+## Law &amp; Public Policy                 -                               -   
+## Physical Sciences                   -                               -   
+## Psychology &amp; Social Work            -                               -   
+## Social Science                      -                               -   
+##                                     Biology &amp; Life Science Business
+## Arts                                -                      -       
+## Biology &amp; Life Science              -                      -       
+## Business                            -                      -       
+## Communications &amp; Journalism         -                      -       
+## Computers &amp; Mathematics             -                      -       
+## Education                           -                      -       
+## Engineering                         -                      -       
+## Health                              -                      -       
+## Humanities &amp; Liberal Arts           -                      -       
+## Industrial Arts &amp; Consumer Services -                      -       
+## Interdisciplinary                   -                      -       
+## Law &amp; Public Policy                 -                      -       
+## Physical Sciences                   -                      -       
+## Psychology &amp; Social Work            -                      -       
+## Social Science                      -                      -       
+##                                     Communications &amp; Journalism
+## Arts                                -                          
+## Biology &amp; Life Science              -                          
+## Business                            -                          
+## Communications &amp; Journalism         -                          
+## Computers &amp; Mathematics             -                          
+## Education                           -                          
+## Engineering                         -                          
+## Health                              -                          
+## Humanities &amp; Liberal Arts           -                          
+## Industrial Arts &amp; Consumer Services -                          
+## Interdisciplinary                   -                          
+## Law &amp; Public Policy                 -                          
+## Physical Sciences                   -                          
+## Psychology &amp; Social Work            -                          
+## Social Science                      -                          
+##                                     Computers &amp; Mathematics Education
+## Arts                                -                       -        
+## Biology &amp; Life Science              -                       -        
+## Business                            -                       -        
+## Communications &amp; Journalism         -                       -        
+## Computers &amp; Mathematics             -                       -        
+## Education                           -                       -        
+## Engineering                         -                       -        
+## Health                              -                       -        
+## Humanities &amp; Liberal Arts           -                       -        
+## Industrial Arts &amp; Consumer Services -                       -        
+## Interdisciplinary                   -                       -        
+## Law &amp; Public Policy                 -                       -        
+## Physical Sciences                   -                       -        
+## Psychology &amp; Social Work            -                       -        
+## Social Science                      -                       -        
+##                                     Engineering Health
+## Arts                                -           -     
+## Biology &amp; Life Science              -           -     
+## Business                            -           -     
+## Communications &amp; Journalism         -           -     
+## Computers &amp; Mathematics             -           -     
+## Education                           -           -     
+## Engineering                         -           -     
+## Health                              -           -     
+## Humanities &amp; Liberal Arts           -           -     
+## Industrial Arts &amp; Consumer Services -           -     
+## Interdisciplinary                   -           -     
+## Law &amp; Public Policy                 -           -     
+## Physical Sciences                   -           -     
+## Psychology &amp; Social Work            -           -     
+## Social Science                      -           -     
+##                                     Humanities &amp; Liberal Arts
+## Arts                                -                        
+## Biology &amp; Life Science              -                        
+## Business                            -                        
+## Communications &amp; Journalism         -                        
+## Computers &amp; Mathematics             -                        
+## Education                           -                        
+## Engineering                         -                        
+## Health                              -                        
+## Humanities &amp; Liberal Arts           -                        
+## Industrial Arts &amp; Consumer Services -                        
+## Interdisciplinary                   -                        
+## Law &amp; Public Policy                 -                        
+## Physical Sciences                   -                        
+## Psychology &amp; Social Work            -                        
+## Social Science                      -                        
+##                                     Industrial Arts &amp; Consumer Services
+## Arts                                -                                  
+## Biology &amp; Life Science              -                                  
+## Business                            -                                  
+## Communications &amp; Journalism         -                                  
+## Computers &amp; Mathematics             -                                  
+## Education                           -                                  
+## Engineering                         -                                  
+## Health                              -                                  
+## Humanities &amp; Liberal Arts           -                                  
+## Industrial Arts &amp; Consumer Services -                                  
+## Interdisciplinary                   -                                  
+## Law &amp; Public Policy                 -                                  
+## Physical Sciences                   -                                  
+## Psychology &amp; Social Work            -                                  
+## Social Science                      -                                  
+##                                     Interdisciplinary Law &amp; Public Policy
+## Arts                                -                 -                  
+## Biology &amp; Life Science              -                 -                  
+## Business                            -                 -                  
+## Communications &amp; Journalism         -                 -                  
+## Computers &amp; Mathematics             -                 -                  
+## Education                           -                 -                  
+## Engineering                         -                 -                  
+## Health                              -                 -                  
+## Humanities &amp; Liberal Arts           -                 -                  
+## Industrial Arts &amp; Consumer Services -                 -                  
+## Interdisciplinary                   -                 -                  
+## Law &amp; Public Policy                 -                 -                  
+## Physical Sciences                   -                 -                  
+## Psychology &amp; Social Work            -                 -                  
+## Social Science                      -                 -                  
+##                                     Physical Sciences Psychology &amp; Social Work
+## Arts                                -                 -                       
+## Biology &amp; Life Science              -                 -                       
+## Business                            -                 -                       
+## Communications &amp; Journalism         -                 -                       
+## Computers &amp; Mathematics             -                 -                       
+## Education                           -                 -                       
+## Engineering                         -                 -                       
+## Health                              -                 -                       
+## Humanities &amp; Liberal Arts           -                 -                       
+## Industrial Arts &amp; Consumer Services -                 -                       
+## Interdisciplinary                   -                 -                       
+## Law &amp; Public Policy                 -                 -                       
+## Physical Sciences                   -                 -                       
+## Psychology &amp; Social Work            -                 -                       
+## Social Science                      -                 -                       
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>library(rstatix)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rstatix&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
+<pre class="r"><code>shapiro.test(CGS1$grad_total[0:5000])</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  CGS1$grad_total[0:5000]
+## W = 0.57823, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>shapiro.test(CGS1$grad_employed[0:5000])</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  CGS1$grad_employed[0:5000]
+## W = 0.58628, p-value &lt; 2.2e-16</code></pre>
+<p>For the data, only a MANOVA test was performed. From the MANOVA test, we are able to see there was no significant value for both numerical and categorical values tested. Hence, we were not able to perform a Univariate ANOVA or t-test. Based off of the assumptions for a MANOVA test, the first assumption, “random samples, independent variables” was not met and therefore, the rest of the assumptions were not met such as multivariate normality of DV’s, homogeneity of within-group covariance matrices and a linear relationship among DV’s. Next, we performed two ANOVA tests in which we compared the total number of graduates and if they were employed based off of their major category. To determine the probability of at least one Type I error, we performed 2 t tests and found no values or p value adjustments. Therefore, we had to perform a bonferroni correction to adjust the p value and found the p value levels for both total number of graduates and employed graduates to be less than 0.05 making them significant.</p>
+</div>
+<div id="randomization-test" class="section level1">
+<h1>Randomization Test</h1>
+<pre class="r"><code>library(dplyr)
+
+X2 &lt;- vector()
+for (i in 1:10000) {
+  samp &lt;- sample(factor(c(&quot;Engineering&quot;, &quot;Business&quot;, &quot;Physical Sciences&quot;, &quot;Law &amp; Public Policy&quot;, &quot;Computers &amp; Mathematics&quot;, &quot;Agriculture &amp; Natural Resources&quot;, &quot;Industrial Arts &amp; Consumer Services&quot;, &quot;Arts&quot;, &quot;Health&quot;, &quot;Social Science&quot;, &quot;Biology &amp; Life Science&quot;, &quot;Psychology &amp; Social Work&quot;, &quot;Communications &amp; Journalism&quot;, &quot;Humanities &amp; Liberal Arts&quot;, &quot;Interdisciplinary&quot;)), 173, replace = T)
+  obs &lt;- table(samp)
+  exp &lt;- c(16, 13, 10, 5, 11, 10, 7, 8, 12, 9, 14, 9, 4, 15, 1)
+  X2[i] &lt;- sum((obs-exp)^2/exp)
+}
+
+quantile(X2,.95)</code></pre>
+<pre><code>##      95% 
+## 308.5008</code></pre>
+<pre class="r"><code>qchisq(.95, df=14)</code></pre>
+<pre><code>## [1] 23.68479</code></pre>
+<pre class="r"><code>curve(dchisq(x, df = 14), from =0 , to = 100, col = &#39;green&#39;, main = &quot;Chi Square Distribution&quot;, xlab = &quot;x^2&quot;, ylab = &quot;dchisq&quot;)</code></pre>
+<p><img src="../../project/Project2_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code># rand_dist&lt;-replicate(1000,){
+# rand&lt;- CGS1%&gt;% mutate(major_category=sample(major_category))
+# chisq.test(rand$major_category)$stat
+# }
+
+# chisq.test(CGS1$major_category)$stat</code></pre>
+<p>The H0: The observed proportions of the major categories matches the theoretical proportions.
+The HA: The observed proportions of the major categories does NOT match the theoretical proportions.
+The Chi-squares value is for a 95th percentile is 307.3105 when it should be 23.68, therefore we fail to reject the null hypothesis.</p>
+</div>
+<div id="linear-regression-model" class="section level1">
+<h1>Linear Regression Model</h1>
+<pre class="r"><code>gradtotal &lt;- CGS1$grad_total - mean(CGS1$grad_total)
+nongradtotal &lt;- CGS1$nongrad_total - mean(CGS1$nongrad_total)
+fit1 &lt;- lm(nongrad_total ~ grad_employed*grad_total, data=CGS1)
+summary(fit1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = nongrad_total ~ grad_employed * grad_total, data = CGS1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -775386  -50540    9189   32731 1707153 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)              -2.717e+04  2.289e+04  -1.187  0.23677    
+## grad_employed             2.448e+00  8.648e-01   2.830  0.00521 ** 
+## grad_total                5.819e-01  6.364e-01   0.914  0.36181    
+## grad_employed:grad_total -1.343e-06  3.127e-07  -4.294 2.95e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 222500 on 169 degrees of freedom
+## Multiple R-squared:  0.6956, Adjusted R-squared:  0.6902 
+## F-statistic: 128.7 on 3 and 169 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>coef(fit1)</code></pre>
+<pre><code>##              (Intercept)            grad_employed               grad_total 
+##            -2.717221e+04             2.447713e+00             5.819414e-01 
+## grad_employed:grad_total 
+##            -1.342864e-06</code></pre>
+<pre class="r"><code>library(ggplot2)
+library(dplyr)
+CGS1 %&gt;% ggplot(aes(grad_total, nongrad_total))+geom_point()+geom_smooth(method = &#39;lm&#39;,se=F)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="../../project/Project2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>cor(CGS$grad_total, CGS$nongrad_total)</code></pre>
+<pre><code>## [1] 0.8079786</code></pre>
+<pre class="r"><code>residual1 &lt;- fit1$residuals
+fittedvalues1 &lt;- fit1$fitted.values
+
+ggplot()+geom_point(aes(fittedvalues1, residual1))+geom_hline(yintercept = 0, color= &#39;green&#39;)</code></pre>
+<p><img src="../../project/Project2_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>ggplot()+geom_histogram(aes(residual1))</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="../../project/Project2_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<pre class="r"><code>ggplot()+geom_qq(aes(sample=residual1))+geom_qq()</code></pre>
+<p><img src="../../project/Project2_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+<pre class="r"><code>library(lmtest)</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre class="r"><code>library(zoo)
+coeftest(fit1)[,1:2]</code></pre>
+<pre><code>##                               Estimate   Std. Error
+## (Intercept)              -2.717221e+04 2.288543e+04
+## grad_employed             2.447713e+00 8.648089e-01
+## grad_total                5.819414e-01 6.364160e-01
+## grad_employed:grad_total -1.342864e-06 3.127076e-07</code></pre>
+<pre class="r"><code># coeftest(fit1, vcov=vcovHC(fit1))[,1:2]
+
+fit2 &lt;- lm(nongrad_total~grad_total, data=CGS1)
+SST &lt;- sum((CGS$nongrad_total-mean(CGS$nongrad_total))^2) 
+SSR &lt;- sum((fit2$fitted.values-mean(CGS$nongrad_total))^2)
+SSE &lt;- sum(fit2$residuals^2) 
+SSR/SST</code></pre>
+<pre><code>## [1] 0.6528294</code></pre>
+<p>While interpreting the coefficients, it is evident that the coefficient is very weak which illustrates a negative relationship between the total number of graduates that are employed and the total number of graduates. The proportion of variation that this plot indicates is 65.28%. Graphically, I was able to check the assumptions of linearity, normality, and homoskedasticity and concluded all three were violated. A robust SE was also found in which this value did in fact differ from the non-robust SE.</p>
+</div>
+<div id="linear-regression-model-bootstrap-edition" class="section level1">
+<h1>Linear Regression Model (bootstrap edition)</h1>
+<pre class="r"><code>samp_distn &lt;- replicate(5000, {
+boot_dat &lt;- CGS[sample(nrow(CGS),replace=TRUE),]
+fit3 &lt;- lm(nongrad_total ~ grad_employed*grad_total, data=boot_dat)
+coef(fit3)
+})
+
+samp_distn%&gt;%t%&gt;%as.data.frame%&gt;%summarize_all(sd)</code></pre>
+<pre><code>##   (Intercept) grad_employed grad_total grad_employed:grad_total
+## 1    23856.96      2.680755    2.24525             1.144767e-06</code></pre>
+<p>After rerunning the same regression model, it is evident that there is a change in the bootstrap SE such that it is higher after rerunning it and there is a difference in the p value.</p>
+</div>
+<div id="logistic-regression-model" class="section level1">
+<h1>Logistic Regression Model</h1>
+<pre class="r"><code>library(tidyverse)
+library(lmtest)
+library(plotROC)
+
+data &lt;- CGS1 %&gt;% mutate(y=ifelse(grad_underover==&quot;yes&quot;,1,0))
+head(data)</code></pre>
+<pre><code>##   X major_code                                  major
+## 1 1       5601                  Construction Services
+## 2 2       6004      Commercial Art And Graphic Design
+## 3 3       6211                 Hospitality Management
+## 4 4       2201 Cosmetology Services And Culinary Arts
+## 5 5       2001             Communication Technologies
+## 6 6       3201                        Court Reporting
+##                        major_category grad_total grad_sample_size grad_employed
+## 1 Industrial Arts &amp; Consumer Services       9173              200          7098
+## 2                                Arts      53864              882         40492
+## 3                            Business      24417              437         18368
+## 4 Industrial Arts &amp; Consumer Services       5411               72          3590
+## 5             Computers &amp; Mathematics       9109              171          7512
+## 6                 Law &amp; Public Policy       1542               22          1008
+##   grad_employed_fulltime_yearround grad_unemployed grad_unemployment_rate
+## 1                             6511             681             0.08754339
+## 2                            29553            2482             0.05775585
+## 3                            14784            1465             0.07386679
+## 4                             2701             316             0.08090118
+## 5                             5622             466             0.05841063
+## 6                              860               0             0.00000000
+##   grad_p25th grad_median grad_underover grad_p75th nongrad_total
+## 1     110000       75000            yes      53000         86062
+## 2      89000       60000             no      40000        461977
+## 3     100000       65000             no      45000        179335
+## 4      85000       47000             no      24500         37575
+## 5      83700       57000             no      40600         53819
+## 6     120000       75000            yes      55000          8921
+##   nongrad_employed nongrad_employed_fulltime_yearround nongrad_unemployed
+## 1            73607                               62435               3928
+## 2           347166                              250596              25484
+## 3           145597                              113579               7409
+## 4            29738                               23249               1661
+## 5            43163                               34231               3389
+## 6             6967                                6063                518
+##   nongrad_unemployment_rate nongrad_p25th nongrad_median nongrad_p75th
+## 1                0.05066099         47000          65000         98000
+## 2                0.06838588         34000          48000         71000
+## 3                0.04842294         35000          50000         75000
+## 4                0.05289977         29000          41600         60000
+## 5                0.07280031         36000          52000         78000
+## 6                0.06920508         34000          50000         75000
+##   grad_share grad_premium  gradtotal y
+## 1 0.09631963   0.15384615 -118499.02 1
+## 2 0.10441977   0.25000000  -73808.02 0
+## 3 0.11983686   0.30000000 -103255.02 0
+## 4 0.12587819   0.12980769 -122261.02 0
+## 5 0.14475273   0.09615385 -118563.02 0
+## 6 0.14737647   0.50000000 -126130.02 1</code></pre>
+<pre class="r"><code>fit4 &lt;- glm(y~grad_median, data=data, family=binomial(link=&quot;logit&quot;))</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre class="r"><code>coeftest(fit4)</code></pre>
+<pre><code>## 
+## z test of coefficients:
+## 
+##                Estimate  Std. Error z value Pr(&gt;|z|)   
+## (Intercept) -8.2382e+01  2.6273e+01 -3.1357 0.001715 **
+## grad_median  1.1175e-03  3.5581e-04  3.1406 0.001686 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>exp(coef(fit4))</code></pre>
+<pre><code>##  (Intercept)  grad_median 
+## 1.667711e-36 1.001118e+00</code></pre>
+<pre class="r"><code>logistic &lt;- function(x){exp(x)/(1+exp(x))}
+table(truth=data$grad_underover, prediction=data$grad_median&gt;75000)%&gt;%addmargins</code></pre>
+<pre><code>##      prediction
+## truth FALSE TRUE Sum
+##   no     85    0  85
+##   yes     7   81  88
+##   Sum    92   81 173</code></pre>
+<pre class="r"><code># accuracy
+(0+81)/173</code></pre>
+<pre><code>## [1] 0.4682081</code></pre>
+<pre class="r"><code># TNR specificity
+81/88</code></pre>
+<pre><code>## [1] 0.9204545</code></pre>
+<pre class="r"><code># TPR sensitivty
+0/85</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code># ppv
+0/81</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code># calculating auc
+widths &lt;- diff(data$y)
+heights &lt;- vector()
+for(i in 1:100) heights[i] &lt;- data$y[i]+data$y[i+1]
+AUC &lt;- sum(heights*widths/2)</code></pre>
+<pre><code>## Warning in heights * widths: longer object length is not a multiple of shorter
+## object length</code></pre>
+<pre class="r"><code>AUC%&gt;%round(3)</code></pre>
+<pre><code>## [1] -1.5</code></pre>
+<pre class="r"><code>CGS1$logit&lt;-predict(fit4,type=&quot;link&quot;)
+CGS1 %&gt;% ggplot() + geom_density(aes(logit,color=grad_underover,fill=grad_underover), alpha=.4) +
+  theme(legend.position=c(.3,.6))+geom_vline(xintercept=2)+xlab(&quot;logit (log-odds)&quot;) +
+  geom_rug(aes(logit,color=grad_underover))</code></pre>
+<p><img src="../../project/Project2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>ROCplot&lt;-ggplot(data)+geom_roc(aes(d=y,m=grad_median), n.cuts=0)
+ROCplot</code></pre>
+<p><img src="../../project/Project2_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>calc_auc(ROCplot)</code></pre>
+<pre><code>##   PANEL group      AUC
+## 1     1    -1 0.998262</code></pre>
+<p>The estimated coefficient intercept was determined to be -8.238. For every 1 increase in the median salary of a graduate, the odds are calculated to be 0.00086. Using a confusion matrix table, we are able to determine the accuracy to be 0.468, the TNR to be 0.92 and both the TPR and ppv to be 0. An AUC of -1.5 was calculated but with an ROC AUC, the value increased to be 0.55 which is very low and indicates a negative connotation.</p>
+</div>
+<div id="logistic-regression-model-ii" class="section level1">
+<h1>Logistic Regression Model II</h1>
+<pre class="r"><code>library(tidyverse)
+library(lmtest)
+library(pROC)</code></pre>
+<pre><code>## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;pROC&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:plotROC&#39;:
+## 
+##     ggroc</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     cov, smooth, var</code></pre>
+<pre class="r"><code>library(glmnet)</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loaded glmnet 4.0-2</code></pre>
+<pre class="r"><code>class_diag &lt;- function(probs,truth){
+  tab &lt;- table(factor(probs&gt;.5,levels=c(&quot;FALSE&quot;,&quot;TRUE&quot;)),truth)
+  acc = sum(diag(tab))/sum(tab)
+  sens = tab[2,2]/colSums(tab)[2]
+  spec = tab[1,1]/colSums(tab)[1]
+  ppv = tab[2,2]/rowSums(tab)[2] 
+
+  if(is.numeric(truth)==FALSE &amp; is.logical(truth)==FALSE) truth&lt;-as.numeric(truth)-1 
+  ord &lt;- order(probs, decreasing=TRUE)
+  probs &lt;- probs[ord]; truth &lt;- truth[ord]
+  
+  TPR = cumsum(truth)/max(1,sum(truth)) 
+  FPR = cumsum(!truth)/max(1,sum(!truth))
+  
+  dup &lt;- c(probs[-1]&gt;=probs[-length(probs)], FALSE)
+  TPR &lt;- c(0,TPR[!dup],1); FPR&lt;-c(0,FPR[!dup],1)
+  
+  n &lt;- length(TPR)
+  auc &lt;- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+
+  data.frame(acc,sens,spec,ppv,auc)
+}
+
+k=10
+data1 &lt;- data[sample(nrow(data)),]
+folds &lt;- cut(seq(1:nrow(data)),breaks=k,labels=F)
+diags &lt;- NULL 
+for(i in 1:k){
+  train &lt;- data1[folds!=i,]   
+  test &lt;- data1[folds==i,]
+  truth &lt;- test$y
+  fit5 &lt;- glm(y~grad_median, data = data,family=&quot;binomial&quot;)
+  probs &lt;- predict(fit5, newdata = test,type=&quot;response&quot;)
+  diags &lt;- rbind(diags,class_diag(probs,truth)) 
+}</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre class="r"><code>summarize_all(diags,mean)</code></pre>
+<pre><code>##         acc sens      spec  ppv    auc
+## 1 0.9826797 0.99 0.9798077 0.97 0.9975</code></pre>
+<pre class="r"><code>k=10
+data &lt;- CGS1 %&gt;% sample_frac
+data$binary &lt;- ifelse(data$grad_underover==&quot;yes&quot;,1,0)
+folds &lt;- ntile(1:nrow(data),n=10) 
+diags &lt;- NULL
+for(i in 1:k){
+train &lt;- data[folds!=i,] 
+test &lt;- data[folds==i,] 
+truth &lt;- test$binary 
+fit6 &lt;- glm(binary~major_code + grad_total + grad_sample_size + grad_employed + grad_employed_fulltime_yearround + grad_unemployed + grad_unemployment_rate + grad_p25th + grad_median + grad_p75th + nongrad_total + nongrad_employed + nongrad_employed_fulltime_yearround + nongrad_unemployed + nongrad_unemployment_rate + nongrad_p25th + nongrad_median + nongrad_p75th + grad_share + grad_premium + gradtotal, 
+data = train, family=&quot;binomial&quot;)
+probs &lt;- predict(fit6, newdata=test, type=&quot;response&quot;)
+diags &lt;- rbind(diags,class_diag(probs,truth))
+}</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :
+## prediction from a rank-deficient fit may be misleading</code></pre>
+<pre class="r"><code>diags %&gt;% summarize_all(mean)</code></pre>
+<pre><code>##         acc      sens      spec       ppv       auc
+## 1 0.8973856 0.8963023 0.8922186 0.8956638 0.9190749</code></pre>
+<pre class="r"><code>data$binary &lt;- ifelse(data$grad_underover==&quot;yes&quot;,1,0)
+y &lt; -as.matrix(data$binary)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;y&#39; not found</code></pre>
+<pre class="r"><code>x &lt;- model.matrix(binary~major_code + grad_total + grad_sample_size + grad_employed + grad_employed_fulltime_yearround + grad_unemployed + grad_unemployment_rate + grad_p25th + grad_median + grad_p75th + nongrad_total + nongrad_employed + nongrad_employed_fulltime_yearround + nongrad_unemployed + nongrad_unemployment_rate + nongrad_p25th + nongrad_median + nongrad_p75th + grad_share + grad_premium + gradtotal, data=data)[,-1]
+head(x)</code></pre>
+<pre><code>##   major_code grad_total grad_sample_size grad_employed
+## 1       2304    1105607            15410        668185
+## 2       6200     602964            10399        457191
+## 3       6108     152238             2872        124688
+## 4       2303      19841              260         11313
+## 5       6004      53864              882         40492
+## 6       5007     227722             4361        168583
+##   grad_employed_fulltime_yearround grad_unemployed grad_unemployment_rate
+## 1                           438791           13889             0.02036289
+## 2                           387928           19494             0.04089493
+## 3                            97680            3174             0.02482364
+## 4                             8130             613             0.05140030
+## 5                            29553            2482             0.05775585
+## 6                           140603            6189             0.03541185
+##   grad_p25th grad_median grad_p75th nongrad_total nongrad_employed
+## 1      70000       55000      44000       1379686           762114
+## 2     130000       85000      52000       2056867          1510380
+## 3     140000      111000      85000        173397           120500
+## 4      70000       56000      42000          2232             1328
+## 5      89000       60000      40000        461977           347166
+## 6     140000      100000      62000        111298            72752
+##   nongrad_employed_fulltime_yearround nongrad_unemployed
+## 1                              476855              28714
+## 2                             1264413              77999
+## 3                               88001               4110
+## 4                                 980                169
+## 5                              250596              25484
+## 6                               57486               3832
+##   nongrad_unemployment_rate nongrad_p25th nongrad_median nongrad_p75th
+## 1                0.03630878         32000          40000         51000
+## 2                0.04910604         40000          60000         98000
+## 3                0.03298291         80000         107000        125000
+## 4                0.11289245         27000          42000         51000
+## 5                0.06838588         34000          48000         71000
+## 6                0.05003656         43000          74000        110000
+##   grad_share grad_premium  gradtotal
+## 1  0.4448598   0.37500000  977934.98
+## 2  0.2266926   0.41666667  475291.98
+## 3  0.4675112   0.03738318   24565.98
+## 4  0.8988810   0.33333333 -107831.02
+## 5  0.1044198   0.25000000  -73808.02
+## 6  0.6717067   0.35135135  100049.98</code></pre>
+<pre class="r"><code>x &lt;- scale(x)
+head(x)</code></pre>
+<pre><code>##   major_code grad_total grad_sample_size grad_employed
+## 1 -0.9336763  4.4542464        3.4575389     3.5946287
+## 2  1.3747182  2.1648347        2.1409069     2.2736363
+## 3  1.3202079  0.1118918        0.1632001     0.1918997
+## 4 -0.9342688 -0.4911430       -0.5230985    -0.5179191
+## 5  1.2585875 -0.3361769       -0.3596691    -0.3352350
+## 6  0.6678613  0.4557023        0.5544324     0.4667178
+##   grad_employed_fulltime_yearround grad_unemployed grad_unemployment_rate
+## 1                        2.9713282      1.75681863            -0.99497211
+## 2                        2.5583237      2.70523181             0.08134801
+## 3                        0.2015273     -0.05624957            -0.76113319
+## 4                       -0.5256134     -0.48959233             0.63205526
+## 5                       -0.3516599     -0.17334180             0.96522269
+## 6                        0.5500595      0.45391381            -0.20608324
+##   grad_p25th grad_median  grad_p75th nongrad_total nongrad_employed
+## 1 -1.3905562  -1.2864031 -0.78889904     2.9147458        2.0945574
+## 2  0.5918302   0.4874746 -0.05474142     4.6090537        4.6741954
+## 3  0.9222279   2.0248352  2.97365875    -0.1033910       -0.1173991
+## 4 -1.3905562  -1.2272738 -0.97243845    -0.5316461       -0.5282431
+## 5 -0.7628005  -0.9907568 -1.15597785     0.6186366        0.6640292
+## 6  0.9222279   1.3744134  0.86295560    -0.2587628       -0.2820098
+##   nongrad_employed_fulltime_yearround nongrad_unemployed
+## 1                           1.5249643          1.2536139
+## 2                           4.8974342          4.3080607
+## 3                          -0.1401809         -0.2712235
+## 4                          -0.5128210         -0.5154676
+## 5                           0.5560812          1.0534341
+## 6                          -0.2708518         -0.2884526
+##   nongrad_unemployment_rate nongrad_p25th nongrad_median nongrad_p75th
+## 1                -0.9125347  -0.849528268    -1.23657414    -1.5978265
+## 2                -0.2504679  -0.008221584     0.09423349     0.6551349
+## 3                -1.0845988   4.198311835     3.22163142     1.9493894
+## 4                 3.0495252  -1.375344946    -1.10349338    -1.5978265
+## 5                 0.7469759  -0.639201597    -0.70425109    -0.6391195
+## 6                -0.2023273   0.307268422     1.02579883     1.2303591
+##   grad_share grad_premium  gradtotal
+## 1  0.2667154   0.25023627  4.4542464
+## 2 -1.0478278   0.47448521  2.1648347
+## 3  0.4031987  -1.56680879  0.1118918
+## 4  3.0023713   0.02598734 -0.4911430
+## 5 -1.7845696  -0.42251052 -0.3361769
+## 6  1.6335569   0.12295985  0.4557023</code></pre>
+<pre class="r"><code>cv &lt;- cv.glmnet(x,y,family=&quot;binomial&quot;)</code></pre>
+<pre><code>## Error in drop(y): object &#39;y&#39; not found</code></pre>
+<pre class="r"><code>lasso &lt;- glmnet(x,y,family=&quot;binomial&quot;,lambda=cv$lambda.1se)</code></pre>
+<pre><code>## Error in drop(y): object &#39;y&#39; not found</code></pre>
+<pre class="r"><code>coef(lasso)</code></pre>
+<pre><code>## Error in coef(lasso): object &#39;lasso&#39; not found</code></pre>
+<pre class="r"><code>k=10
+data &lt;- CGS1 %&gt;% sample_frac 
+folds &lt;- ntile(1:nrow(data),n=10) 
+data$binary &lt;- ifelse(data$grad_underover==&quot;yes&quot;,1,0)
+diags&lt;-NULL
+for(i in 1:k){
+train &lt;- data[folds!=i,] 
+test &lt;- data[folds==i,] 
+truth &lt;- test$binary 
+fit7 &lt;- glm(binary~major_code + grad_total + grad_sample_size + grad_employed + grad_employed_fulltime_yearround + grad_unemployed + grad_unemployment_rate + grad_p25th + grad_median + grad_p75th + nongrad_total + nongrad_employed + nongrad_employed_fulltime_yearround + nongrad_unemployed + nongrad_unemployment_rate + nongrad_p25th + nongrad_median + nongrad_p75th + grad_share + grad_premium + gradtotal,
+data=train, family=&quot;binomial&quot;)
+probs &lt;- predict(fit7, newdata=test, type=&quot;response&quot;)
+diags&lt;-rbind(diags,class_diag(probs,truth))
+}</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :
+## prediction from a rank-deficient fit may be misleading</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre class="r"><code>diags%&gt;%summarize_all(mean)</code></pre>
+<pre><code>##         acc   sens      spec       ppv       auc
+## 1 0.9130719 0.9125 0.9080556 0.9193182 0.9135408</code></pre>
+<p>In regards to the fit model, an accuracy of 0.931 was determined while the sensitivity was calculated to be 0.952, the speicificty was calculated to be 0.911, the precision was calculated to be 0.925 and the AUC was determined to be 0.953. In regards to the 10-fold, an accuracy of 0.931 was determined while the sensitivity was calculated to be 0.952, the specificity was calculated to be 0.911, the precision was calculated to be 0.925 and the AUC was determined to be 0.953. The variables that are retained after performing LASSO are grad_median and grad_employed. In comparison to the model’s out-of-sample AUC to that of the logistic regressions above, an AUC od 0.953 was calculated which is the same value.</p>
+<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

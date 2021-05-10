@@ -1,0 +1,66 @@
+---
+title: Sumrun's First Blog Post!
+author: Sumrun Sheikh
+date: '2021-05-09'
+slug: sumrun-s-first-blog-post
+categories: []
+tags: []
+description: ''
+---
+![](/post/2021-05-09-sumrun-s-first-blog-post_files/code.jpeg)
+
+In the class SDS348, I learned how to code R and the basics of Python. Below, are some of the things I have learned from Python:
+
+1) We can use Python as a calculator:
+```{python}
+5-2
+7*10
+3+8
+```
+
+2) We can also use built in functions to determine the minimum and maximum values (along with others) from a list of numbers:
+```{python}
+x = list(range(2,8,2))
+len(x)
+min(x)
+max(x)
+```
+
+3) We can slice a range of numbers from a list to grab either the middle two letters, every - element and others:
+```{python}
+plist = list(range(12))
+plist
+# Grab the middle two letters
+plist[4:6]
+# Grab every fourth element
+plist[::-4]
+# Grab odd values from 1 - 7
+plist[1:8:2]
+```
+
+4) We can perform indexing in order to determine values in a list:
+```{python}
+list1=[1,2,3,4,5,6]
+list2=['a','b','c','e','h']
+list2[1]
+list2[-1]
+```
+
+Along with learning the basics of Python, I learned how R and Python can play together.
+```{r}
+#R Code
+library(reticulate)
+sumrun <- "Hello"
+```
+```{python}
+#Python Code
+sumrun = "World"
+print(r.sumrun, sumrun)
+```
+```{r}
+#R Code
+cat(c(sumrun,py$sumrun))
+```
+
+
+

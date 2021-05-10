@@ -1,0 +1,146 @@
+---
+title: "SumrunSheikhProject1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+# Introduction
+The two data sets I found on the R studio server are called "college_grad_students" and "college_recent_grads". I found these two data sets to be interesting as I am also graduating this May but it was also intriguing to see the various statistics of each graduate! Both data sets illustrate similar data in the sense that they separate each graduate based on their major, their major category, how many students have graduated, if they are employed or not employed, and their median salaries. Based off of the data sets, both data sets illustrate graduates that have graduated from different years. In addition, in the "college_grad_students" data set, the data set contains nongraduates along with how many of those folks are employed, not employed and their median salary. With both data sets, I expect to see a difference in the number of students who have graduated based off of their major and major category along with having different salaries. 
+
+```{R}
+library(tidyverse)
+library(fivethirtyeight)
+data("college_grad_students")
+data("college_recent_grads")
+currentgrad <- college_grad_students
+recentgrad <- college_recent_grads
+```
+
+## 1. Tidying: Rearranging Wide/Long
+```{R}
+currentgrad %>% pivot_wider(names_from = "major_category", values_from = "grad_total")
+wider1 <- currentgrad %>% pivot_wider(names_from = "major_category", values_from = "grad_total")
+wider1 %>% pivot_longer(c("Industrial Arts & Consumer Services", "Arts", "Business", "Computers & Mathematics", "Law & Public Policy", "Agriculture & Natural Resources", "Communications & Journalism", "Engineering", "Social Science", "Health", "Interdisciplinary", "Physical Sciences", "Humanities & Liberal Arts", "Psychology & Social Work", "Biology & Life Science", "Education"), names_to = "major_category", values_to = "grad_total")
+
+recentgrad %>% pivot_wider(names_from = "major_category", values_from = "total")
+wider2 <- recentgrad %>% pivot_wider(names_from = "major_category", values_from = "total")
+wider2 %>% pivot_longer(c("Engineering", "Business", "Physical Sciences", "Law & Public Policy", "Computers & Mathematics", "Agriculture & Natural Resources", "Industrial Arts & Consumer Services", "Arts", "Health", "Social Science", "Biology & Life Science", "Psychology & Social Work", "Communications & Journalism", "Humanities & Liberal Arts", "Interdisciplinary"), names_to = "major_category", values_to = "total")
+```
+
+The function of pivot_wider and pivot_longer is to expand the data set by either adding rows or adding columns. Above, I used the function pivot_wider which will increase the number of columns within a data set but will decrease the number of rows but I also used pivot_longer. I renamed my data sets from "college_recent_grads" to "recentgrads" and "college_grad_students" to "currentgrad". Because my data set was already tidy, I un-tidied it by using the pivot_wider function in which I called the data set "currentgrad" and called the pivot function using "%>%". In the pivot_wider function, I used a categorical variable followed by a numerical variable. To tidy the data, I used the pivot_longer function by writing out all of the major categories and adding a numerical variable; the total number of graduates. I performed the same function for my "recentgrad" data set as well.
+
+# 2. Joining/Merging
+```{R}
+allgrads <- currentgrad %>% left_join(recentgrad)
+```
+To join both data sets, I performed a left_join join. The purpose of the join function is to merge together two datasets. Therefore, a left_join dataset would combine the "recentgrad" dataset into the "currentgrad" dataset because it is on the left. Both datasets were joined by "major_code", "major" and "major_category" with 173 rows and 40 columns whereas before, "currentgrad" had 173 rows and 22 columns and "recentgrad" had 173 rows and 21 columns. Moreover, it is evident that 2 columns were dropped.
+
+# 3. Wrangling
+```{R}
+allgrads %>% filter(major_category == "Business")
+allgradsbusiness <- allgrads %>% filter(major_category == "Business")
+allgrads %>% arrange(median)
+
+allgrads %>% select(major, major_category, grad_median)
+allgrads %>% group_by(major, major_category, grad_median)
+
+zscore <- function(x) (x-mean(x,na.rm=T)) / sd(x,na.rm=T)
+allgrads %>% mutate_at(c("grad_total","grad_employed"), list(z=zscore))
+
+allgrads %>% summarize_all(n_distinct)
+```
+Using the "dplyr" functions, I was able to summarize the same categorical and numerical variable in different ways by filtering, arranging, selecting, grouping, mutating and summarizing. 
+
+# 3A. Summary Statistics
+```{R}
+median(allgrads$grad_median)
+mean(allgrads[allgrads$grad_median>75000,]$grad_p75th)
+sd(allgrads[allgrads$grad_median<75000,]$grad_p75th)
+median(allgrads$grad_total)
+min(allgrads[allgrads$grad_total>37872,]$grad_employed)
+max(allgrads[allgrads$grad_total>37872,]$grad_employed)
+
+```
+
+After joining both datasets together, I performed a set of summary statistics that I found very interesting. First, I found the median salary of employed graduated which was 75,000 dollars. I then performed a mean function by looking at the salary of graduate students who were in the 75th percentile and were making more than the median salary in which their mean salary was 61,314.81 dollars. Next, I used the standard deviation function to find out how many employed graduates in the 75th percentile make less than the median amount which was 4,398.83 dollars. After, I found the median number of total graduates which is 37872 students. Following that, I found the minimum number of employed graduates that is greater than the median number of total graduates which is 28930 while the highest number of employed graduates is 915,341 graduates. 
+
+
+# 4. Visualizing
+```{R}
+correlationmatrix <- allgrads %>% select_if(is.numeric) %>% cor(use = "pair")
+```
+
+```{R}
+tenvariables <- allgrads %>% select(grad_total, grad_sample_size, grad_employed, grad_employed_fulltime_yearround, grad_unemployed, grad_unemployment_rate, grad_p25th, grad_median, grad_p75th, nongrad_total)
+
+tenvariables %>% select_if(is.numeric) %>% cor(use = "pair")
+
+cormat <- tenvariables %>% select_if(is.numeric) %>% cor(use = "pair")
+
+tidycor <- cormat %>% as.data.frame %>% rownames_to_column("var1") %>% 
+  pivot_longer(-1, names_to = "var2", values_to = "correlation")
+
+tidycor %>% ggplot(aes(var1, var2, fill = correlation)) + geom_tile() + 
+  scale_fill_gradient2(low = "white", mid = "lightgreen", high = "darkgreen") + 
+  geom_text(aes(label = round(correlation, 2)), color = "white", size = 4) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + coord_fixed()
+```
+
+The first plot I made was a correlation heatmap using numeric variables. My dataset contained a lot of variables and thus, I selected 10 variables. To see the correlation, I used the correlations function which outputted the correlation values for all 10 variables. To create the actual heatmap, I first used pivot_long to organize the variables and then used ggplot with geom_tile to create a checkered map. In the heatmap, it illustrated how much correlation there was between all of the various variables within the shared data set with 1 being the highest and 0 meaning there was no correlation at all.  
+
+```{R}
+ggplot(data = allgrads, aes(x = men, y = employed)) + 
+  geom_point(size = 3, aes(color = median)) + xlab("Number of Men") + 
+  ylab("Number of Employed Men") + labs(color = "Median Salary") + 
+  scale_color_gradient(low = "yellow", high = "darkgreen")
+```
+
+The next plot I created was a scatterplot using ggplot. The three numeric variables I used were the number of men, the number of employed men and their median salary. From this plot, we can see there is a positive correlation as the higher the number of graduate men and the higher the number of men who graduated and employed, the higher their median salary.  
+
+```{R}
+ggplot(allgrads, aes(x = major)) + geom_bar(aes(y = men, fill = grad_total), stat = "summary", fun = mean) + theme(axis.text.x = element_text(angle = 53, hjust = 1)) + 
+  xlab("Category of Major") + 
+  ylab("Number of Men Per Major") + 
+  labs(fill = "Grad total") +
+  scale_fill_gradient2(low = "white", mid = "yellow", high = "darkgreen")
+```
+The final plot I made was a barplot. The three variables I used to create this barplot was the category of major, the number of men per major category and how many total graduates there are. Thus, with each category of major, we are able to see how many men are in that category of major and how many of those men graduated from each of those majors which I found interesting to see more people graduate from certain majors than from others and how many men chose certain majors over others. 
+
+# 5. Dimensionality Reduction
+```{R}
+library(cluster)
+select(allgrads, grad_total, grad_employed, grad_unemployed) 
+
+clust_data <- select(allgrads, grad_total, grad_employed, grad_unemployed) %>% 
+  scale()
+
+sil_width <- vector()  
+for (i in 2:10) {
+  kms <- kmeans(clust_data, centers = i) 
+  sil <- silhouette(kms$cluster, dist(clust_data)) 
+  sil_width[i] <- mean(sil[, 3]) }
+ggplot() + geom_line(aes(x = 1:10, y = sil_width)) + scale_x_continuous(name = "k", 
+                                                                        breaks = 1:10)
+kmeans1 <- clust_data %>% kmeans(3)
+kmeans1
+
+kmeansclust <- clust_data %>% as.data.frame %>% mutate(cluster = as.factor(kmeans1$cluster))
+kmeansclust
+
+kmeansclust %>% ggplot(aes(grad_total, grad_employed, grad_unemployed, color = cluster)) + 
+  geom_point()
+
+library(GGally)
+ggpairs(kmeansclust, columns = 1:3, aes(color = cluster))
+```
+
+Lastly, I used a ggplot to illustrate a cluster of three variables. The three variables I used in my cluster were the total number of graduates, the number of employed graduates and the number of unemployed graduates. The purpose of clustering is to cluster data based off of how similar they are by showing it visually and showing the correlation. From the graph, we are able to see that there is a high correlation between those who have graduated followed by those who graduated and are employed which is followed by the least correlated, those who graduates and are unemployed. All scatter plots show a similar trend such that there is a positive correlation and all graphs indicate that the red has the highest correlation with blue and green having similar correlations. 

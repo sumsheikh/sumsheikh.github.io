@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sumrun Sheikh</title>
+    <link>/</link>
+    <description>Recent content on Sumrun Sheikh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sun, 09 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sumrun&#39;s First Blog Post!</title>
+      <link>/post/2021/05/09/sumrun-s-first-blog-post/</link>
+      <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021/05/09/sumrun-s-first-blog-post/</guid>
+      <description>In the class SDS348, I learned how to code R and the basics of Python. Below, are some of the things I have learned from Python:
+We can use Python as a calculator:  5-2 ## 3 7*10 ## 70 3+8 ## 11 We can also use built in functions to determine the minimum and maximum values (along with others) from a list of numbers:  x = list(range(2,8,2)) len(x) ## 3 min(x) ## 2 max(x) ## 6 We can slice a range of numbers from a list to grab either the middle two letters, every - element and others:  plist = list(range(12)) plist # Grab the middle two letters ## [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] plist[4:6] # Grab every fourth element ## [4, 5] plist[::-4] # Grab odd values from 1 - 7 ## [11, 7, 3] plist[1:8:2] ## [1, 3, 5, 7] We can perform indexing in order to determine values in a list:  list1=[1,2,3,4,5,6] list2=[&amp;#39;a&amp;#39;,&amp;#39;b&amp;#39;,&amp;#39;c&amp;#39;,&amp;#39;e&amp;#39;,&amp;#39;h&amp;#39;] list2[1] ## &amp;#39;b&amp;#39; list2[-1] ## &amp;#39;h&amp;#39; Along with learning the basics of Python, I learned how R and Python can play together.</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description> Check out some of my coding projects below:
+ Wrangling &amp;amp; Exploratory Data Analysis
+ Modeling, Inference, Prediction
+  -- </description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>/resume/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume/</guid>
+      <description>    </description>
+    </item>
+    
+    <item>
+      <title>SumrunSheikhProject1</title>
+      <link>/project/project1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project1/</guid>
+      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+When you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</description>
+    </item>
+    
+    <item>
+      <title>SumrunSheikhProject1</title>
+      <link>/project/sumrunsheikhproject1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/sumrunsheikhproject1/</guid>
+      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+When you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</description>
+    </item>
+    
+    <item>
+      <title>SumrunSheikhProject2</title>
+      <link>/project/project2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project2/</guid>
+      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+When you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</description>
+    </item>
+    
+  </channel>
+</rss>
